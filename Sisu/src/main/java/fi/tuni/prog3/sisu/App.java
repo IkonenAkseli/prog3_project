@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -50,7 +51,7 @@ public class App extends Application{
         
         
         ComboBox comboBox = getInitialData(courseDataMap);
-        TreeItem<String> rootItem = new TreeItem<>("Tutkinto-ohjelma");
+        
         //treeView.setRoot(rootItem);
         
         //ArrayList<TreeItem<String>> firstChildren = getInitialData();
@@ -61,7 +62,7 @@ public class App extends Application{
         */
         Button btn1 = new Button("Takaisin");
         
-        TreeView treeView = new TreeView();
+        
         
         
         comboBox.setOnAction(new EventHandler() {
@@ -81,12 +82,13 @@ public class App extends Application{
                 
                 
                 try {
+                    TreeItem<String> rootItem = new TreeItem<>("Tutkinto-ohjelma");
                     JSONArray jsonArr = new JSONArray(APISearch(address));
                     
                     rootItem.setValue(name);
                     
                     try {
-                        
+                        TreeView treeView = new TreeView();
                         moduleInfo(jsonArr, rootItem);
                         VBox treeBox = new VBox();
                         treeBox.getChildren().add(btn1);
@@ -117,9 +119,9 @@ public class App extends Application{
         
         Scene scene2 = new Scene(rootBox,1280,720);
         
-        btn1.setOnAction(e -> {
+        btn1.setOnAction((ActionEvent e) -> {
             stage.setScene(scene2);
-            treeView.setRoot(null);
+            
         });
         
         button.setOnAction(e -> stage.setScene(scene2));
