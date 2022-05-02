@@ -40,6 +40,7 @@ public class App extends Application{
         var button = new Button("Sisään SISUun");
         stage.setTitle("Melkein parempi SISU");
         
+        // Talletetaan kaikki moduulit tanne
         HashMap<String, JSONObject> courseDataMap = new HashMap<>();
         
         
@@ -51,6 +52,7 @@ public class App extends Application{
         
         
         ComboBox comboBox = getInitialData(courseDataMap);
+        comboBox.setPromptText("Valitse tutkinto-ohjelma");
         
         //treeView.setRoot(rootItem);
         
@@ -64,18 +66,19 @@ public class App extends Application{
         
         
         
-        
+        // Valitaan
         comboBox.setOnAction(new EventHandler() {
             @Override
             public void handle(Event e) {
                 String clickedName = comboBox.getValue().toString();
                 var jsonObj = courseDataMap.get(clickedName);
                 
-                System.out.println(jsonObj);
+                //System.out.println(jsonObj);
                 
                 String groupId = jsonObj.getString("groupId");
                 String name = jsonObj.getString("name");
                 
+                // Asetetaan osoite, josta lahdetaan hakemaan
                 String address = "https://sis-tuni.funidata.fi/kori/api/modules/"
                         + "by-group-id?groupId=" + groupId
                         + "&universityId=tuni-university-root-id";
@@ -88,7 +91,10 @@ public class App extends Application{
                     rootItem.setValue(name);
                     
                     try {
+                        // Luodaan treeview, VBox ja scene, asetetaan scene
+                        // nakymaan
                         TreeView treeView = new TreeView();
+                        // Haetaan koko rakenne
                         moduleInfo(jsonArr, rootItem);
                         VBox treeBox = new VBox();
                         treeBox.getChildren().add(btn1);
@@ -119,6 +125,7 @@ public class App extends Application{
         
         Scene scene2 = new Scene(rootBox,1280,720);
         
+        // Takaisin valitsemaan tutkinto-ohjelmaa
         btn1.setOnAction((ActionEvent e) -> {
             stage.setScene(scene2);
             
@@ -160,6 +167,8 @@ public class App extends Application{
             throws IOException{
         
         // Toistaiseksi paljon turhaa koodia!
+        // Rakentaa comboboxin ja palauttaa sen, seka paivittaa kartan kaikista
+        // moduuleista
         ArrayList<TreeItem<String>> items = new ArrayList<>();
         ComboBox<String> comboBox = new ComboBox<>();
         
@@ -190,6 +199,7 @@ public class App extends Application{
     
     
     private JSONArray createJson(String data){
+        // Vain tutkinto-ohjelman alustamista varten
         JSONObject jsonObject = new JSONObject(data);
         JSONArray jsonArray = jsonObject.getJSONArray("searchResults");
         return jsonArray;
@@ -280,6 +290,7 @@ public class App extends Application{
         String name = "";
         String description = "";
 
+        // Haetaan moduulin tiedot riippuen moduulin tyypista
         if(type.equals("ModuleRule")) {
             try {
                 byte[] sBytes = new JSONObject(object.get("name").toString())
