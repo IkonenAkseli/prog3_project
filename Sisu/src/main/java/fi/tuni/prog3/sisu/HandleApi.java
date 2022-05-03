@@ -91,12 +91,12 @@ public ComboBox getInitialData(HashMap<String, JSONObject> courseDataMap)
             {
                 mastDegrees.put(name, obj);
             }
-            else if (code.endsWith("T"))
+            else if (code.endsWith("0") || code.endsWith("5"))
             {
-                doctDegrees.put(name, obj);
+                miscDegrees.put(name, obj);
             }
             else {
-                miscDegrees.put(name, obj);
+                doctDegrees.put(name, obj);
             }
             
             TreeItem<String> item = new TreeItem<>(name);
@@ -122,6 +122,10 @@ public HashMap<String, JSONObject> getMastDegrees(){
 
 public HashMap<String, JSONObject> getDoctDegrees(){
         return doctDegrees;
+}
+
+public HashMap<String, JSONObject> getMiscDegrees(){
+        return miscDegrees;
 }
     
     private JSONArray createJson(String data){

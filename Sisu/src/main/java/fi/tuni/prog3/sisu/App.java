@@ -149,8 +149,8 @@ public class App extends Application{
         
         CheckBox bachDegreeCB = new CheckBox("Kandidaatin tutkinto");
         CheckBox mastDegreeCB = new CheckBox("Maisterin tutkinto");
-        CheckBox doctDegreeCB = new CheckBox("Tohtorin tutkinto");
-        CheckBox miscDegreeCB = new CheckBox("Muu");
+        CheckBox doctDegreeCB = new CheckBox("Tohtorin/Lisensiaatin tutkinto");
+        CheckBox miscDegreeCB = new CheckBox("Erikoislääkäri koulutus");
         
         Button btnUpdate = new Button("Päivitä");
         btnUpdate.setOnAction(e -> updateComboBox(comboBox,
@@ -222,9 +222,9 @@ public class App extends Application{
             if (doctDegree){
                 filteredDataMap.putAll(apiHandler.getDoctDegrees());
             }
-                /*if (miscDegree){
+            if (miscDegree){
                 filteredDataMap.putAll(apiHandler.getMiscDegrees());
-                }*/
+                }
             
         
         }
