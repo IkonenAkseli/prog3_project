@@ -78,7 +78,7 @@ public ComboBox getInitialData(HashMap<String, JSONObject> courseDataMap)
         for (Object module : jsonData){
             JSONObject obj = new JSONObject(module.toString());
             String name = obj.get("name").toString();
-            String code = obj.get("CODE").toString();
+            String code = obj.get("code").toString();
             
             courseDataMap.put(name, obj);
             
