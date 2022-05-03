@@ -20,6 +20,18 @@ public class Course {
         credits = courseCredits;
     }
     
+    public String getName(){
+        return name;
+    }
+    
+    public String getDescription(){
+        return description;
+    }
+    
+    public int getCredits(){
+        return credits;
+    }
+    
     public String html2text(String html) {
         return Jsoup.parse(html).wholeText();
     }
