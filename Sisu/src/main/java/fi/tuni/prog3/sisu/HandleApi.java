@@ -108,6 +108,10 @@ public ComboBox getInitialData(HashMap<String, JSONObject> courseDataMap)
         return comboBox;
     }
 
+public HashMap<String, Course> getAllCourses(){
+        return allCourses;
+}
+
 public HashMap<String, JSONObject> getBachDegrees(){
         return bachDegrees;
 }
