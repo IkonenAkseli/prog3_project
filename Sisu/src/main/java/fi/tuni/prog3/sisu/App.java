@@ -21,11 +21,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -110,7 +113,26 @@ public class App extends Application{
                         
                         
         
-                        
+                        treeView.setCellFactory(tv ->  {
+                            final Tooltip tooltip = new Tooltip();
+                            TreeCell<Path> cell = new TreeCell<Path>() {
+                                @Override
+                                public void updateItem(Path item, boolean empty) {
+                                    super.updateItem(item, empty);
+                                }
+                            };
+
+                            
+
+                            cell.setOnMouseEntered(entered -> {
+                                // do something
+                            });
+                            
+                            cell.setOnMouseExited(exited -> {
+                                
+                            });
+                            return cell ;
+                        });
                         
                         
                         
@@ -152,18 +174,20 @@ public class App extends Application{
         VBox rootBox = new VBox();
         rootBox.getChildren().addAll(comboBox, btnCloseScene2);
         
-        GridPane gridpaneS2 = new GridPane();
-        gridpaneS2.setHgap(20);
-        gridpaneS2.add(comboBox, 0, 0);
-        gridpaneS2.add(btnCloseScene2, 0, 1);
-        gridpaneS2.add(bachDegreeCB, 1, 0);
-        gridpaneS2.add(mastDegreeCB, 1, 1);
-        gridpaneS2.add(doctDegreeCB, 1, 2);
-        gridpaneS2.add(miscDegreeCB, 1, 3);
-        gridpaneS2.add(btnUpdate, 1, 4);
+        GridPane gridPaneS2 = new GridPane();
+        gridPaneS2.setHgap(20);
+        gridPaneS2.add(comboBox, 0, 0);
+        gridPaneS2.add(btnCloseScene2, 0, 1);
+        gridPaneS2.add(bachDegreeCB, 1, 0);
+        gridPaneS2.add(mastDegreeCB, 1, 1);
+        gridPaneS2.add(doctDegreeCB, 1, 2);
+        gridPaneS2.add(miscDegreeCB, 1, 3);
+        gridPaneS2.add(btnUpdate, 1, 4);
         
         
-        Scene scene2 = new Scene(gridpaneS2,1280,720);
+        gridPaneS2.setAlignment(Pos.CENTER);
+        
+        Scene scene2 = new Scene(gridPaneS2,1280,720);
         
         // Takaisin valitsemaan tutkinto-ohjelmaa
         btnBack.setOnAction((ActionEvent e) -> {
