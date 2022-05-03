@@ -42,7 +42,7 @@ public class App extends Application{
         stage.setTitle("Melkein parempi SISU");
         
         // Talletetaan kaikki opintosuunnat tanne
-        HashMap<String, JSONObject> courseDataMap = new HashMap<>();
+        HashMap<String, JSONObject> programDataMap = new HashMap<>();
         Button btnClose = new Button(); 
         btnClose.setText("Sulje"); 
         btnClose.setOnAction( e -> stage.close() );
@@ -55,7 +55,7 @@ public class App extends Application{
         
         HandleApi apiHandler = new HandleApi();
         
-        ComboBox comboBox = apiHandler.getInitialData(courseDataMap);
+        ComboBox comboBox = apiHandler.getInitialData(programDataMap);
         comboBox.setPromptText("Valitse tutkinto-ohjelma");
         
         //treeView.setRoot(rootItem);
@@ -75,7 +75,7 @@ public class App extends Application{
             @Override
             public void handle(Event e) {
                 String clickedName = comboBox.getValue().toString();
-                var jsonObj = courseDataMap.get(clickedName);
+                var jsonObj = programDataMap.get(clickedName);
                 
                 //System.out.println(jsonObj);
                 
