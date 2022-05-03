@@ -44,6 +44,7 @@ public class HandleApi {
             while(scanner.hasNext()) {
                 sb.append(scanner.nextLine());
             }
+            scanner.close();
         }
         
         connection.disconnect();
