@@ -18,10 +18,12 @@ import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -133,11 +135,31 @@ public class App extends Application{
         btnCloseScene2.setText("Sulje"); 
         btnCloseScene2.setOnAction( e -> stage.close() );
         
+        // Rajaus checkboxit
+        
+        CheckBox bachDegreeCB = new CheckBox("Kandidaatin tutkinto");
+        CheckBox mastDegreeCB = new CheckBox("Maisterin tutkinto");
+        CheckBox doctDegreeCB = new CheckBox("Tohtorin tutkinto");
+        CheckBox miscDegreeCB = new CheckBox("Muu");
+        
+        Button btnUpdate = new Button("Päivitä");
+        
         
         VBox rootBox = new VBox();
         rootBox.getChildren().addAll(comboBox, btnCloseScene2);
         
-        Scene scene2 = new Scene(rootBox,1280,720);
+        GridPane gridpaneS2 = new GridPane();
+        gridpaneS2.setHgap(20);
+        gridpaneS2.add(comboBox, 0, 0);
+        gridpaneS2.add(btnCloseScene2, 0, 1);
+        gridpaneS2.add(bachDegreeCB, 1, 0);
+        gridpaneS2.add(mastDegreeCB, 1, 1);
+        gridpaneS2.add(doctDegreeCB, 1, 2);
+        gridpaneS2.add(miscDegreeCB, 1, 3);
+        gridpaneS2.add(btnUpdate, 1, 4);
+        
+        
+        Scene scene2 = new Scene(gridpaneS2,1280,720);
         
         // Takaisin valitsemaan tutkinto-ohjelmaa
         btnBack.setOnAction((ActionEvent e) -> {
