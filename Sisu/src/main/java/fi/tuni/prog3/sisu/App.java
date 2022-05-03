@@ -7,7 +7,10 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -113,26 +116,7 @@ public class App extends Application{
                         
                         
         
-                        treeView.setCellFactory(tv ->  {
-                            final Tooltip tooltip = new Tooltip();
-                            TreeCell<Path> cell = new TreeCell<Path>() {
-                                @Override
-                                public void updateItem(Path item, boolean empty) {
-                                    super.updateItem(item, empty);
-                                }
-                            };
-
-                            
-
-                            cell.setOnMouseEntered(entered -> {
-                                // do something
-                            });
-                            
-                            cell.setOnMouseExited(exited -> {
-                                
-                            });
-                            return cell ;
-                        });
+                        
                         
                         
                         
@@ -174,7 +158,8 @@ public class App extends Application{
                                                   mastDegreeCB.isSelected(),
                                                   doctDegreeCB.isSelected(),
                                                   miscDegreeCB.isSelected(),
-                                                  apiHandler));
+                                                  apiHandler,
+                                                  programDataMap));
         
         
         VBox rootBox = new VBox();
@@ -212,34 +197,41 @@ public class App extends Application{
         launch();
     }
     
-    private void updateComboBox(ComboBox combobox,
+    private void updateComboBox(ComboBox comboBox,
                                 boolean bachDegree, boolean mastDegree,
                                 boolean doctDegree, boolean miscDegree,
-                                HandleApi apiHandler){
-        if (!(bachDegree && mastDegree && doctDegree && miscDegree)){
-            
+                                HandleApi apiHandler,
+                                HashMap<String, JSONObject> originalMap){
+        TreeMap<String, JSONObject> filteredDataMap = new TreeMap<>();
+        comboBox.getItems().clear();
+        
+        if ((!bachDegree && !mastDegree && !doctDegree && !miscDegree)){
+            filteredDataMap.putAll(originalMap);
+            System.out.println("hei");
         }
         else{
-        combobox.getItems().clear();
-        HashMap<String, JSONObject> filteredDataMap = new HashMap<>();
-        
-        if (bachDegree){
-            filteredDataMap.putAll(apiHandler.getBachDegrees());
-        }
-        if (mastDegree){
-            filteredDataMap.putAll(apiHandler.getMastDegrees());
-        }
-        if (doctDegree){
-            filteredDataMap.putAll(apiHandler.getDoctDegrees());
-        }
-        /*if (miscDegree){
-            filteredDataMap.putAll(apiHandler.getMiscDegrees());
-        }*/
-        for (HashMap.Entry<String, JSONObject> set : filteredDataMap.entrySet())
-            combobox.getItems().add(set.getKey());
-        }
-        
-    }
+            
 
+
+            if (bachDegree){
+                filteredDataMap.putAll(apiHandler.getBachDegrees());
+            }
+            if (mastDegree){
+                filteredDataMap.putAll(apiHandler.getMastDegrees());
+            }
+            if (doctDegree){
+                filteredDataMap.putAll(apiHandler.getDoctDegrees());
+            }
+                /*if (miscDegree){
+                filteredDataMap.putAll(apiHandler.getMiscDegrees());
+                }*/
+            
+        
+        }
+        for (Iterator<Map.Entry<String, JSONObject>> it = filteredDataMap.entrySet().iterator(); it.hasNext();) {
+                var set = it.next();
+                comboBox.getItems().add(set.getKey());
+            }
+    }
 
 }
