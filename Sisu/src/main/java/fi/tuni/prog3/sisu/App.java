@@ -207,7 +207,7 @@ public class App extends Application{
         
         if ((!bachDegree && !mastDegree && !doctDegree && !miscDegree)){
             filteredDataMap.putAll(originalMap);
-            System.out.println("hei");
+            
         }
         else{
             
