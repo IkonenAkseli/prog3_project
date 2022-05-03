@@ -23,6 +23,9 @@ import org.json.JSONObject;
 
 public class HandleApi {
     
+    private HashMap<String, Course> allCourses = new HashMap<>();
+    
+    
     public HandleApi(){
         
     }
@@ -215,7 +218,11 @@ public class HandleApi {
                               new JSONObject(object.get("credits").toString())
                                                    .get("min").toString());
                 
-                completeString = name + "\n" + description + "\nOpintopisteet: " + credits;
+                Course course = new Course(name, description, credits);
+                allCourses.put(name, course);
+                description = course.html2text(description);
+                completeString = name + "\n" + description + "\nOpintopisteet: "
+                        + credits;
             }
         }
         return completeString;
