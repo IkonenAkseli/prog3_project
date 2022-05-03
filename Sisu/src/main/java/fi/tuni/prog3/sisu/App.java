@@ -169,6 +169,12 @@ public class App extends Application{
         CheckBox miscDegreeCB = new CheckBox("Muu");
         
         Button btnUpdate = new Button("Päivitä");
+        btnUpdate.setOnAction(e -> updateComboBox(comboBox,
+                                                  bachDegreeCB.isSelected(), 
+                                                  mastDegreeCB.isSelected(),
+                                                  doctDegreeCB.isSelected(),
+                                                  miscDegreeCB.isSelected(),
+                                                  apiHandler));
         
         
         VBox rootBox = new VBox();
@@ -187,7 +193,7 @@ public class App extends Application{
         
         gridPaneS2.setAlignment(Pos.CENTER);
         
-        Scene scene2 = new Scene(gridPaneS2,1280,720);
+        Scene scene2 = new Scene(gridPaneS2, 1280, 720);
         
         // Takaisin valitsemaan tutkinto-ohjelmaa
         btnBack.setOnAction((ActionEvent e) -> {
@@ -206,7 +212,34 @@ public class App extends Application{
         launch();
     }
     
-    
+    private void updateComboBox(ComboBox combobox,
+                                boolean bachDegree, boolean mastDegree,
+                                boolean doctDegree, boolean miscDegree,
+                                HandleApi apiHandler){
+        if (!(bachDegree && mastDegree && doctDegree && miscDegree)){
+            
+        }
+        else{
+        combobox.getItems().clear();
+        HashMap<String, JSONObject> filteredDataMap = new HashMap<>();
+        
+        if (bachDegree){
+            filteredDataMap.putAll(apiHandler.getBachDegrees());
+        }
+        if (mastDegree){
+            filteredDataMap.putAll(apiHandler.getMastDegrees());
+        }
+        if (doctDegree){
+            filteredDataMap.putAll(apiHandler.getDoctDegrees());
+        }
+        /*if (miscDegree){
+            filteredDataMap.putAll(apiHandler.getMiscDegrees());
+        }*/
+        for (HashMap.Entry<String, JSONObject> set : filteredDataMap.entrySet())
+            combobox.getItems().add(set.getKey());
+        }
+        
+    }
 
 
 }
