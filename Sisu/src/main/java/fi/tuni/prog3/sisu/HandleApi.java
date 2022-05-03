@@ -24,11 +24,15 @@ import org.json.JSONObject;
 public class HandleApi {
     
     private HashMap<String, Course> allCourses = new HashMap<>();
-    
+    private HashMap<String, JSONObject> bachDegrees = new HashMap<>();
+    private HashMap<String, JSONObject> mastDegrees = new HashMap<>();
+    private HashMap<String, JSONObject> doctDegrees = new HashMap<>();
+    private HashMap<String, JSONObject> miscDegrees = new HashMap<>();
     
     public HandleApi(){
         
     }
+	
     
     public String getApiData(String url) throws MalformedURLException,
                                                 IOException {
@@ -53,13 +57,13 @@ public class HandleApi {
     } 
     
     
-    public ComboBox getInitialData(HashMap<String, JSONObject> courseDataMap)
+public ComboBox getInitialData(HashMap<String, JSONObject> courseDataMap)
             throws IOException{
         
         // Toistaiseksi paljon turhaa koodia!
         // Rakentaa comboboxin ja palauttaa sen, seka paivittaa kartan kaikista
         // moduuleista
-        
+        ArrayList<TreeItem<String>> items = new ArrayList<>();
         ComboBox<String> comboBox = new ComboBox<>();
         
         
@@ -74,17 +78,47 @@ public class HandleApi {
         for (Object module : jsonData){
             JSONObject obj = new JSONObject(module.toString());
             String name = obj.get("name").toString();
+            String code = obj.get("CODE").toString();
             
             courseDataMap.put(name, obj);
             
+            // Lisää tutkinto-ohjelmat omiin datamappeihin tutkinnon tason perusteella (kandi, maisteri jne.)
+            if (code.endsWith("K"))
+            {
+                bachDegrees.put(name, obj);
+            }
+            else if (code.endsWith("M"))
+            {
+                mastDegrees.put(name, obj);
+            }
+            else if (code.endsWith("T"))
+            {
+                doctDegrees.put(name, obj);
+            }
+            else {
+                miscDegrees.put(name, obj);
+            }
             
+            TreeItem<String> item = new TreeItem<>(name);
+            items.add(item);
             comboBox.getItems().add(name);
         }
         
         
         return comboBox;
     }
-    
+
+public HashMap<String, JSONObject> getBachDegrees(){
+        return bachDegrees;
+}
+
+public HashMap<String, JSONObject> getMastDegrees(){
+        return mastDegrees;
+}
+
+public HashMap<String, JSONObject> getDoctDegrees(){
+        return doctDegrees;
+}
     
     private JSONArray createJson(String data){
         // Vain tutkinto-ohjelman alustamista varten
