@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -40,13 +41,16 @@ public class App extends Application{
         var button = new Button("Sisään SISUun");
         stage.setTitle("Melkein parempi SISU");
         
-        // Talletetaan kaikki moduulit tanne
+        // Talletetaan kaikki opintosuunnat tanne
         HashMap<String, JSONObject> courseDataMap = new HashMap<>();
+        Button btnClose = new Button(); 
+        btnClose.setText("Sulje"); 
+        btnClose.setOnAction( e -> stage.close() );
         
+        VBox startBox = new VBox(button, btnClose);
+        startBox.setAlignment(Pos.CENTER);
         
-        
-        
-        var scene = new Scene(new StackPane(button), 640, 480);
+        var scene = new Scene(startBox, 1280, 720);
         
         
         HandleApi apiHandler = new HandleApi();
@@ -62,7 +66,7 @@ public class App extends Application{
             rootItem.getChildren().add(item);
         });
         */
-        Button btn1 = new Button("Takaisin");
+        Button btnBack = new Button("Takaisin");
         
         
         
@@ -98,14 +102,18 @@ public class App extends Application{
                         apiHandler.getStructureData(jsonArr, rootItem);
                         //moduleInfo(jsonArr, rootItem);
                         VBox treeBox = new VBox();
-                        treeBox.getChildren().add(btn1);
+                        Button btnCloseScene3 = new Button();
+                        btnCloseScene3.setText("Sulje"); 
+                        btnCloseScene3.setOnAction( e3 -> stage.close() );
+                        
+                        
         
         
                         Scene scene3 = new Scene(treeBox, 1280, 720);
                         
                         treeView.setRoot(rootItem);
                         treeBox.getChildren().add(treeView);
-                        
+                        treeBox.getChildren().addAll(btnBack, btnCloseScene3);
                         
                         
                         
@@ -121,13 +129,18 @@ public class App extends Application{
             }
         });
         
+        Button btnCloseScene2 = new Button();
+        btnCloseScene2.setText("Sulje"); 
+        btnCloseScene2.setOnAction( e -> stage.close() );
+        
+        
         VBox rootBox = new VBox();
-        rootBox.getChildren().add(comboBox);
+        rootBox.getChildren().addAll(comboBox, btnCloseScene2);
         
         Scene scene2 = new Scene(rootBox,1280,720);
         
         // Takaisin valitsemaan tutkinto-ohjelmaa
-        btn1.setOnAction((ActionEvent e) -> {
+        btnBack.setOnAction((ActionEvent e) -> {
             stage.setScene(scene2);
             
         });
