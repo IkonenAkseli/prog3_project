@@ -45,7 +45,9 @@ public class HandleApi {
                 sb.append(scanner.nextLine());
             }
         }
-       
+        
+        connection.disconnect();
+        
         return sb.toString();
     } 
     
@@ -56,7 +58,7 @@ public class HandleApi {
         // Toistaiseksi paljon turhaa koodia!
         // Rakentaa comboboxin ja palauttaa sen, seka paivittaa kartan kaikista
         // moduuleista
-        ArrayList<TreeItem<String>> items = new ArrayList<>();
+        
         ComboBox<String> comboBox = new ComboBox<>();
         
         
@@ -74,8 +76,7 @@ public class HandleApi {
             
             courseDataMap.put(name, obj);
             
-            TreeItem<String> item = new TreeItem<>(name);
-            items.add(item);
+            
             comboBox.getItems().add(name);
         }
         
