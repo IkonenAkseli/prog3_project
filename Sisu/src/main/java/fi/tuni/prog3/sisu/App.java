@@ -49,13 +49,18 @@ public class App extends Application{
         var button = new Button("Sisään SISUun");
         stage.setTitle("Melkein parempi SISU");
         
+        // lisätään nappula opiskelijan valinnalle
+        Button btnOpiskelija = new Button();
+        btnOpiskelija.setText("Opiskelija");
+        
+        
         // Talletetaan kaikki opintosuunnat tanne
         HashMap<String, JSONObject> programDataMap = new HashMap<>();
         Button btnClose = new Button(); 
         btnClose.setText("Sulje"); 
         btnClose.setOnAction( e -> stage.close() );
         
-        VBox startBox = new VBox(button, btnClose);
+        VBox startBox = new VBox(button, btnClose, btnOpiskelija);
         startBox.setAlignment(Pos.CENTER);
         
         var scene = new Scene(startBox, 1280, 720);
