@@ -23,11 +23,12 @@ public class OpiskelijaAsetus {
         String jsonString = "";
         try {
             jsonString = Files.readString(path);
+            studentData = new JSONArray(jsonString);
         } catch (IOException ex) {
             Logger.getLogger(OpiskelijaAsetus.class.getName()).log(Level.SEVERE, null, ex);
             
         }
-        studentData = new JSONArray(jsonString);
+        
     }
 
     
