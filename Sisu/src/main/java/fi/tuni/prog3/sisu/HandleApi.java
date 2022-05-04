@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TreeItem;
+import javafx.scene.input.MouseEvent;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +34,13 @@ public class HandleApi {
         
     }
 	
-    
+    /**
+     * Fetches specific JSON-data from api and returns it as a String.
+     * @param url Address from which to fetch data.
+     * @return Fetched data as a String.
+     * @throws MalformedURLException
+     * @throws IOException 
+     */
     public String getApiData(String url) throws MalformedURLException,
                                                 IOException {
         //Otetaan yhteys apiin ja haetaan sielta tietoja
@@ -57,13 +64,23 @@ public class HandleApi {
     } 
     
     
-public ComboBox getInitialData(HashMap<String, JSONObject> courseDataMap)
+    /**
+     * Fetches every programme from sisu api and stores it in the HashMap that
+     * is provided as a parameter. Also saves programmes within the class by
+     * their level.
+     * Returns a ComboBox with all of the
+     * programme names stored in it.
+     * @param courseDataMap HashMap in which all programmes are stored.
+     * @return ComboBox containing all programme names.
+     * @throws IOException 
+     */
+    public ComboBox getInitialData(HashMap<String, JSONObject> courseDataMap)
             throws IOException{
         
         // Toistaiseksi paljon turhaa koodia!
         // Rakentaa comboboxin ja palauttaa sen, seka paivittaa kartan kaikista
         // moduuleista
-        ArrayList<TreeItem<String>> items = new ArrayList<>();
+        
         ComboBox<String> comboBox = new ComboBox<>();
         
         
@@ -99,8 +116,7 @@ public ComboBox getInitialData(HashMap<String, JSONObject> courseDataMap)
                 doctDegrees.put(name, obj);
             }
             
-            TreeItem<String> item = new TreeItem<>(name);
-            items.add(item);
+            
             comboBox.getItems().add(name);
         }
         
@@ -108,25 +124,45 @@ public ComboBox getInitialData(HashMap<String, JSONObject> courseDataMap)
         return comboBox;
     }
 
-public HashMap<String, Course> getAllCourses(){
-        return allCourses;
-}
+    /**
+     * Returns a HashMap of all stored courses.
+     * @return a HashMap of all stored courses.
+     */
+    public HashMap<String, Course> getAllCourses(){
+            return allCourses;
+    }
 
-public HashMap<String, JSONObject> getBachDegrees(){
-        return bachDegrees;
-}
+    /**
+     * Returns a HashMap of all bachelors degrees.
+     * @return a HashMap of all bachelors degrees.
+     */
+    public HashMap<String, JSONObject> getBachDegrees(){
+            return bachDegrees;
+    }
 
-public HashMap<String, JSONObject> getMastDegrees(){
-        return mastDegrees;
-}
+    /**
+     * Returns a HashMap of all masters degrees.
+     * @return a HashMap of all masters degrees.
+     */
+    public HashMap<String, JSONObject> getMastDegrees(){
+            return mastDegrees;
+    }
 
-public HashMap<String, JSONObject> getDoctDegrees(){
-        return doctDegrees;
-}
+    /**
+     * Returns a HashMap of all doctorate degrees.
+     * @return a HashMap of all doctorate degrees.
+     */
+    public HashMap<String, JSONObject> getDoctDegrees(){
+            return doctDegrees;
+    }
 
-public HashMap<String, JSONObject> getMiscDegrees(){
-        return miscDegrees;
-}
+    /**
+     * Returns a HashMap of all degrees that aren't placed by level.
+     * @return a HashMap of all degrees that aren't placed by level.
+     */
+    public HashMap<String, JSONObject> getMiscDegrees(){
+            return miscDegrees;
+    }
     
     private JSONArray createJson(String data){
         // Vain tutkinto-ohjelman alustamista varten
@@ -136,8 +172,15 @@ public HashMap<String, JSONObject> getMiscDegrees(){
     }
     
     
-    //Haetaan kaikki rekursiivisesti apista
-    public TreeItem getStructureData(JSONArray jsonData, TreeItem treeItem)
+    /**
+     * Recursively fetches the structure and courses of a given programme and
+     * stores it in the given TreeItem.
+     * 
+     * @param jsonData JSONArray of the programme.
+     * @param treeItem TreeItem to which store the structure.
+     * @throws IOException 
+     */
+    void getStructureData(JSONArray jsonData, TreeItem treeItem)
                                 throws IOException {          
                        
         for(Object module : jsonData) {
@@ -189,11 +232,11 @@ public HashMap<String, JSONObject> getMiscDegrees(){
                                         new JSONArray(getApiData(s)).get(0)
                                                       .toString());              
                
-                TreeItem item = new TreeItem(getItemInfo(courseData, type));                  
+                TreeItem item = new TreeItem(getItemInfo(courseData, type));
                 treeItem.getChildren().add(item);
             }
         }
-        return treeItem;
+        //return treeItem;
     }
 
 
