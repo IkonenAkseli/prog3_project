@@ -246,7 +246,7 @@ public class HandleApi {
     
 
 
-
+    // Different module types
     private final ArrayList<String> modules = new ArrayList<String>() {
         {
             add("CreditsRule");
@@ -256,7 +256,7 @@ public class HandleApi {
         }
     };
     
-    
+    // For getting the name or name and other info of a JSON module.
     private String getItemInfo(JSONObject object, String type){
 
         String completeString = "";
@@ -290,13 +290,13 @@ public class HandleApi {
                 try {
                     description = new JSONObject(object.get("content")
                                               .toString()).get("en").toString();
-                } catch(JSONException exc) {
+                } catch(JSONException ex) {
 
                     try {
                         description = new JSONObject(object.get("tweetText")
                                         .toString()).getString("fi");
-                    } catch(JSONException exc2) {
-                        description = "Description not available";
+                    } catch(JSONException exc) {
+                        description = "Kuvausta ei saatavilla!";
                     } 
                 }
             }
