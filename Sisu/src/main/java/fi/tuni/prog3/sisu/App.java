@@ -123,12 +123,38 @@ public class App extends Application{
                         btnCloseScene3.setText("Sulje"); 
                         btnCloseScene3.setOnAction( e3 -> stage.close() );
                         
+                        Scene scene3 = new Scene(treeBox, 1280, 720);
+                        
                         // Printtaa kurssin nimen kun sita klikkaa
                         treeView.getSelectionModel().selectedItemProperty()
                                 .addListener((v, oldValue, newValue) -> {
                                 if (newValue != null){
-                                    System.out.println(getTreeItemName(newValue.toString()));
+                                    String courseName = getTreeItemName(newValue.toString());
+                                    HashMap<String, Course> allCourses = apiHandler.getAllCourses();
                                     
+                                    if (allCourses.containsKey(courseName)){
+                                        System.out.println(courseName);
+                                        
+                                        Label nameLabel = new Label(courseName);
+                                        
+                                        Button btnAddCompleted = new Button("Lisää suoritus");
+                                        Button btnRemoveCompleted = new Button("Poista suoritus");
+                                        Button btnAddPlan = new Button("Lisää suunnitelmaan");
+                                        Button btnRemovePlan = new Button("Poista suunnitelmasta");
+                                        Button btnBack = new Button("Takaisin");
+                                        
+                                        btnBack.setOnAction(et -> {
+                                            stage.setScene(scene3);
+                                        });
+                                        
+                                        
+                                        VBox courseBox = new VBox(nameLabel, btnAddCompleted, btnRemoveCompleted, btnAddPlan, btnRemovePlan, btnBack);
+                                        courseBox.setAlignment(Pos.CENTER);
+                                        courseBox.setSpacing(10);
+                                        
+                                        var courseScene = new Scene(courseBox, 1280, 720);
+                                        stage.setScene(courseScene);
+                                    }
                                 }
                                 });
                         
@@ -136,7 +162,7 @@ public class App extends Application{
                         
                         
         
-                        Scene scene3 = new Scene(treeBox, 1280, 720);
+                        
                         
                         treeView.setRoot(rootItem);
                         treeBox.getChildren().add(treeView);
