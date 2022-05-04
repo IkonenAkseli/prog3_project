@@ -4,6 +4,9 @@ import org.json.JSONObject;
 import org.json.JSONArray;  
 import java.io.FileWriter;
 import java.io.IOException;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
+import org.apache.commons.io.IOUtils; 
 
 public class OpiskelijaAsetus {
     
@@ -16,7 +19,8 @@ public class OpiskelijaAsetus {
         
         
         String fileData = "src/students.json";
-        JSONArray students = new JSONArray(fileData);
+        String jsonString = readFileAsString(fileData);
+        JSONArray students = new JSONArray(jsonString);
         
         for (int i=0; i < students.length(); i++) {
             JSONObject studentInfo = students.getJSONObject(i);
@@ -61,7 +65,8 @@ public class OpiskelijaAsetus {
     }*/
     public JSONArray getStudentCourses(String studentNumber) {
         String fileData = "src/students.json";
-        JSONArray students = new JSONArray(fileData);
+        String jsonString = readFileAsString(fileData);
+        JSONArray students = new JSONArray(jsonString);
         
         for (int i=0; i < students.length(); i++) {
             JSONObject studentInfo = students.getJSONObject(i);
@@ -79,7 +84,8 @@ public class OpiskelijaAsetus {
     }
     public JSONArray getStudents(){
         String fileData = "src/students.json";
-        JSONArray students = new JSONArray(fileData);
+        String jsonString = readFileAsString(fileData);
+        JSONArray students = new JSONArray(jsonString);
         JSONArray empty = new JSONArray();
         if (students.length() == 0) {
             
