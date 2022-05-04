@@ -53,6 +53,10 @@ public class App extends Application{
         Button btnOpiskelija = new Button();
         btnOpiskelija.setText("Opiskelija");
         
+        OpiskelijaAsetus studentHelper = new OpiskelijaAsetus();
+        
+        btnOpiskelija.setOnAction(eh -> {System.out.println(studentHelper.getStudents());});
+        
         
         // Talletetaan kaikki opintosuunnat tanne
         HashMap<String, JSONObject> programDataMap = new HashMap<>();
@@ -60,7 +64,7 @@ public class App extends Application{
         btnClose.setText("Sulje"); 
         btnClose.setOnAction( e -> stage.close() );
         
-        VBox startBox = new VBox(button, btnClose, btnOpiskelija);
+        VBox startBox = new VBox(button, btnOpiskelija, btnClose);
         startBox.setAlignment(Pos.CENTER);
         
         var scene = new Scene(startBox, 1280, 720);

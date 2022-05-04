@@ -5,10 +5,14 @@ import org.json.JSONArray;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class opiskelija_asetus {
+public class OpiskelijaAsetus {
+    
+    public OpiskelijaAsetus(){
+        
+    }
 
     
-    public bool addStudent(String studentNumber, String name) {
+    public boolean addStudent(String studentNumber, String name) {
         
         
         String fileData = "src/students.json";
@@ -16,7 +20,7 @@ public class opiskelija_asetus {
         
         for (int i=0; i < students.length(); i++) {
             JSONObject studentInfo = students.getJSONObject(i);
-            if (studentNumber == studentInfo.getString("studentnumber")) {
+            if (studentNumber.equals(studentInfo.getString("studentnumber"))) {
                 return false;
             }
         }
@@ -30,10 +34,10 @@ public class opiskelija_asetus {
         student.put("coursesdone", coursesDone);
         student.put("courseplans", coursePlans);
         
-        students.add(student);
+        students.put(student);
         try {
             FileWriter file = new FileWriter("src/students.json", false);
-            file.write(students.toJSONString());
+            file.write(students.toString());
             file.close();
             return true;
         }
@@ -42,8 +46,8 @@ public class opiskelija_asetus {
          return false;
       }
     }
-    
-    public bool editStudentData(String studentNumber, tehdytkurssitiedot, suunnitellut kurssit) {
+    /*
+    public boolean editStudentData(String studentNumber, JSONArray tehdytkurssitiedot, suunnitellutKurssit) {
         String fileData = "src/students.json";
         JSONArray students = new JSONArray(fileData);
         
@@ -53,7 +57,8 @@ public class opiskelija_asetus {
                 
             }
         }
-    }
+        return true;
+    }*/
     public JSONArray getStudentCourses(String studentNumber) {
         String fileData = "src/students.json";
         JSONArray students = new JSONArray(fileData);
@@ -64,8 +69,8 @@ public class opiskelija_asetus {
                 JSONArray studentDone = studentInfo.getJSONArray("coursesdone");
                 JSONArray studentPlan = studentInfo.getJSONArray("courseplans");
                 JSONArray returnable = new JSONArray();
-                returnable.add(studentDone);
-                returnable.add(studentPlan);
+                returnable.put(studentDone);
+                returnable.put(studentPlan);
                 return returnable;
             }
         }
@@ -75,14 +80,16 @@ public class opiskelija_asetus {
     public JSONArray getStudents(){
         String fileData = "src/students.json";
         JSONArray students = new JSONArray(fileData);
+        JSONArray empty = new JSONArray();
         if (students.length() == 0) {
-            JSONArray empty = new JSONArray();
+            
             return empty;
         }
         else {
+            JSONArray numbersNames = new JSONArray();
             for (int i=0; i < students.length(); i++) {
             JSONObject studentInfo = students.getJSONObject(i);
-            JSONArray numbersNames = new JSONArray();
+            
             JSONObject student = new JSONObject();
             String number = studentInfo.getString("studentnumber");
             String name = studentInfo.getString("name");
@@ -90,9 +97,10 @@ public class opiskelija_asetus {
             student.put("studentnumber", number);
             student.put("name", name);
             
-            numbersNames.add(student);
+            numbersNames.put(student);
+            
+            }
             return numbersNames;
         }
     }
-
 }
