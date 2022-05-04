@@ -123,8 +123,14 @@ public class App extends Application{
                         btnCloseScene3.setText("Sulje"); 
                         btnCloseScene3.setOnAction( e3 -> stage.close() );
                         
-                        
-        
+                        // Printtaa kurssin nimen kun sita klikkaa
+                        treeView.getSelectionModel().selectedItemProperty()
+                                .addListener((v, oldValue, newValue) -> {
+                                if (newValue != null){
+                                    System.out.println(getTreeItemName(newValue.toString()));
+                                    
+                                }
+                                });
                         
                         
                         
@@ -243,4 +249,18 @@ public class App extends Application{
             }
     }
 
+    private String getTreeItemName(String item){
+        
+        String[] lines = item.split("[\r\n]+");
+        
+        String wanted = lines[0];
+        
+        StringBuilder sb = new StringBuilder(wanted);
+        
+        sb.delete(0,18);
+        
+        return sb.toString();
+    }
+    
+    
 }
