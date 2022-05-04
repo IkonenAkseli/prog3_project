@@ -4,9 +4,14 @@ import org.json.JSONObject;
 import org.json.JSONArray;  
 import java.io.FileWriter;
 import java.io.IOException;
-import net.sf.json.JSONObject;
+/*import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
-import org.apache.commons.io.IOUtils; 
+import org.apache.commons.io.IOUtils; */
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class OpiskelijaAsetus {
     
@@ -19,7 +24,14 @@ public class OpiskelijaAsetus {
         
         
         String fileData = "src/students.json";
-        String jsonString = readFileAsString(fileData);
+        Path path = Paths.get("src/students.json");
+        String jsonString = "";
+        try {
+            jsonString = Files.readString(path);
+        } catch (IOException ex) {
+            Logger.getLogger(OpiskelijaAsetus.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
         JSONArray students = new JSONArray(jsonString);
         
         for (int i=0; i < students.length(); i++) {
@@ -64,27 +76,42 @@ public class OpiskelijaAsetus {
         return true;
     }*/
     public JSONArray getStudentCourses(String studentNumber) {
-        String fileData = "src/students.json";
-        String jsonString = readFileAsString(fileData);
-        JSONArray students = new JSONArray(jsonString);
-        
-        for (int i=0; i < students.length(); i++) {
-            JSONObject studentInfo = students.getJSONObject(i);
-            if (studentNumber == studentInfo.getString("studentnumber")) {
-                JSONArray studentDone = studentInfo.getJSONArray("coursesdone");
-                JSONArray studentPlan = studentInfo.getJSONArray("courseplans");
-                JSONArray returnable = new JSONArray();
-                returnable.put(studentDone);
-                returnable.put(studentPlan);
-                return returnable;
+        try {
+            String fileData = "src/students.json";
+            Path path = Paths.get("src/students.json");
+            String jsonString = Files.readString(path);
+            JSONArray students = new JSONArray(jsonString);
+            
+            for (int i=0; i < students.length(); i++) {
+                JSONObject studentInfo = students.getJSONObject(i);
+                if (studentNumber == studentInfo.getString("studentnumber")) {
+                    JSONArray studentDone = studentInfo.getJSONArray("coursesdone");
+                    JSONArray studentPlan = studentInfo.getJSONArray("courseplans");
+                    JSONArray returnable = new JSONArray();
+                    returnable.put(studentDone);
+                    returnable.put(studentPlan);
+                    return returnable;
+                }
             }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(OpiskelijaAsetus.class.getName()).log(Level.SEVERE, null, ex);
         }
         JSONArray noData = new JSONArray();
-        return noData;
+            return noData;
     }
     public JSONArray getStudents(){
         String fileData = "src/students.json";
-        String jsonString = readFileAsString(fileData);
+        Path path = Paths.get("src/students.json");
+        
+        String jsonString = "";
+        try {
+            jsonString = Files.readString(path);
+        } catch (IOException ex) {
+            Logger.getLogger(OpiskelijaAsetus.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+        
         JSONArray students = new JSONArray(jsonString);
         JSONArray empty = new JSONArray();
         if (students.length() == 0) {

@@ -1,6 +1,7 @@
 [
     {
         "name" : "hei",
+        "studentnumber" : "k244522",
         "courses" : [
             "Yksi",
             "kaksi"
