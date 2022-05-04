@@ -15,8 +15,19 @@ import java.util.logging.Logger;
 
 public class OpiskelijaAsetus {
     
+    private JSONArray studentData;
+    
+    
     public OpiskelijaAsetus(){
-        
+        Path path = Paths.get("src/students.json");
+        String jsonString = "";
+        try {
+            jsonString = Files.readString(path);
+        } catch (IOException ex) {
+            Logger.getLogger(OpiskelijaAsetus.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+        studentData = new JSONArray(jsonString);
     }
 
     
