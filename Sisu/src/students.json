@@ -1,9 +1,32 @@
 [
     {
-        "name" : "hei",
-        "courses" : [
-            "Yksi",
-            "kaksi"
+        "name" : "Matti",
+        "studentnumber" : "k244522",
+        "coursesdone" : [
+            
+        ],
+        "courseplans" : [
+
+        ]
+    },
+    {
+        "name" : "Lissu",
+        "studentnumber" : "H123456",
+        "coursesdone" : [
+
+        ],
+        "courseplans" : [
+
+        ]
+    },
+    {
+        "name" : "Pekka",
+        "studentnumber" : "K987654",
+        "coursesdone" : [
+
+        ],
+        "courseplans" : [
+            
         ]
     }
 ]
