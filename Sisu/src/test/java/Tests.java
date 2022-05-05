@@ -1,7 +1,7 @@
 import fi.tuni.prog3.sisu.App;
 import java.util.concurrent.TimeoutException;
 import javafx.scene.Node;
-import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.api.FxAssert.*;
 import static org.testfx.matcher.control.LabeledMatchers.hasText;
 
 
@@ -20,26 +20,34 @@ import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.testfx.api.FxToolkit;
+import org.testfx.matcher.base.NodeMatchers;
 
 /**
  *
  * @author j
  */
 public class Tests extends TestFX {
-    final String SCENE1_ID = "#scene";
-    final String SCENE2_ID = "#scene2";
-    final String SCENE3_ID = "#scene3";
     
     final String OPISKELIJA_NAME = "Opiskelija";
     final String SULJE_NAME = "Sulje";
     
     
-    @Test
+    @Test //Tarkista, että sisään kirjautuminen onnistuu
     public void login(){
         String LOGIN_NAME = "Sisään SISUun";
         clickOn(LOGIN_NAME);
-        //verifyThat("#scene2", "scene2");
-        Scene scene = stage.getScene();
-        assertEquals("#scene2", scene);
+        verifyThat("Valitse tutkinto-ohjelma", NodeMatchers.isVisible());
+    }
+    @Test
+    public void chooseDegree() {
+        String LOGIN_NAME = "Sisään SISUun";
+        String CHOOSE_DEGREE = "Valitse tutkinto-ohjelma";
+        String DEGREE = "Arkkitehdin tutkinto-ohjelma";
+        String COURSES = "Arkkitehdin tutkinto-ohjelman yhteiset opinnot";
+        clickOn(LOGIN_NAME);
+        clickOn(CHOOSE_DEGREE);
+        clickOn(DEGREE);
+        doubleClickOn(DEGREE);
+        verifyThat(COURSES, NodeMatchers.isVisible());
     }
 }
