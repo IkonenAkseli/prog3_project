@@ -1,3 +1,5 @@
+package fi.tuni.prog3.test;
+
 
 
 import fi.tuni.prog3.sisu.App;
