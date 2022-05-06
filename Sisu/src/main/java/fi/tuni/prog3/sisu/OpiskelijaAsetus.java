@@ -25,7 +25,6 @@ public class OpiskelijaAsetus {
     /**
      * Reads the JSON-file where student data is stored and saves it into 
      * studentData variable for the duration of programs running.
-     * @throws IOExeption
      */
     public OpiskelijaAsetus(){
         
