@@ -125,7 +125,13 @@ public class App extends Application{
                 
                 // Get the name of the programme and fetch it's information
                 // from the data map
-                String clickedName = comboBox.getValue().toString();
+                String clickedName = "";
+                if(!comboBox.getSelectionModel().isEmpty()){
+                    clickedName = comboBox.getValue().toString();
+                }
+                else{
+                    return;
+                }
                 var jsonObj = programDataMap.get(clickedName);
                 
                 
@@ -354,6 +360,7 @@ public class App extends Application{
         
         Scene sceneStu = new Scene (gridPaneStu, 1280, 720);
         closeStu.setOnAction(eh -> {
+            isTeacher[0] = false;
             stage.setScene(scene);
                 });
         
@@ -424,6 +431,8 @@ public class App extends Application{
         
         // Takaisin valitsemaan tutkinto-ohjelmaa
         btnBack.setOnAction((ActionEvent e) -> {
+            comboBox.valueProperty().set("Valitse tuktinto-ohjelma");
+            comboBox.setPromptText("Valitse tutkinto-ohjelma");
             stage.setScene(scene2);
             
         });
@@ -485,7 +494,9 @@ public class App extends Application{
             
             currentStudent.add(number);
             
-            
+            // Places null value to comboBox, no idea why not the prompt
+            comboBox.valueProperty().set("Valitse tuktinto-ohjelma");
+            comboBox.setPromptText("Valitse tutkinto-ohjelma");
             stage.setScene(scene2);
         });
     }
