@@ -24,6 +24,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
@@ -139,7 +140,13 @@ public class App extends Application{
                             stage.close(); 
                                 });
                         
-                        Scene scene3 = new Scene(treeBox, 1280, 720);
+                        GridPane gridPaneTree = new GridPane();
+                        gridPaneTree.setHgap(20);
+                        
+
+                        gridPaneTree.setAlignment(Pos.CENTER);
+                        
+                        Scene scene3 = new Scene(gridPaneTree, 1280, 720);
                         
                         // Printtaa kurssin nimen kun sita klikkaa
                         treeView.getSelectionModel().selectedItemProperty()
@@ -211,15 +218,19 @@ public class App extends Application{
                                 }
                                 });
                         
+                        ListView completedCourses = new ListView();
                         
                         
-                        
-        
+                        gridPaneTree.add(treeView, 0, 0);
+                        treeView.setMinWidth(600);
+                        gridPaneTree.add(btnBack, 0, 1);
+                        gridPaneTree.add(btnCloseScene3, 1, 1);
+                        //gridPaneTree.add(closeStu, 1, 2);
                         
                         
                         treeView.setRoot(rootItem);
-                        treeBox.getChildren().add(treeView);
-                        treeBox.getChildren().addAll(btnBack, btnCloseScene3);
+                        /*treeBox.getChildren().add(treeView);
+                        treeBox.getChildren().addAll(btnBack, btnCloseScene3);*/
                         
                         
                         
