@@ -185,8 +185,8 @@ public class App extends Application{
             }
         });
         
-        TextField stuNumber = new TextField();
-        TextField stuName = new TextField();
+        TextField stuNumber = new TextField("Opiskelijanumero");
+        TextField stuName = new TextField("Nimi");
         Button addStu = new Button();
         addStu.setText("Lisää");
         Button closeStu = new Button();
@@ -197,8 +197,8 @@ public class App extends Application{
         gridPaneStu.setHgap(20);
         gridPaneStu.add(stuNumber, 0, 0);
         gridPaneStu.add(stuName, 0, 1);
-        gridPaneStu.add(addStu, 1, 0);
-        gridPaneStu.add(closeStu, 1, 1);
+        gridPaneStu.add(addStu, 1, 1);
+        gridPaneStu.add(closeStu, 1, 2);
         
         gridPaneStu.setAlignment(Pos.CENTER);
         
