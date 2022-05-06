@@ -27,6 +27,7 @@ public class OpiskelijaAsetus {
      * studentData variable for the duration of programs running.
      */
     public OpiskelijaAsetus(){
+        
         Path path = Paths.get("src/students.json");
         String jsonString = "";
         try {
@@ -57,7 +58,8 @@ public class OpiskelijaAsetus {
         
         
        
-        
+        // This loops checks if added student already exists by iterating the
+        // data from JSON-file
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
             if (studentNumber.equals(studentInfo.getString("studentnumber"))) {
@@ -69,6 +71,8 @@ public class OpiskelijaAsetus {
         JSONArray coursePlans = new JSONArray();
         JSONObject student = new JSONObject();
         
+        // Initializing new student object with studentnumnber name and two
+        // empty JSONArrays for planned and completed courses
         student.put("studentnumber", studentNumber);
         student.put("name", name);
         student.put("coursesdone", coursesDone);
@@ -85,11 +89,14 @@ public class OpiskelijaAsetus {
      * @param courseName course that was chosen by user
      */
     public void addPlannedCourse(String studentNumber, String courseName) {
+        // Iterating throught student data to find the right student
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
             if (studentNumber.equals(studentInfo.getString("studentnumber"))) {
                 JSONArray courseData = studentInfo.getJSONArray("courseplans");
                 courseData.put(courseName);
+                // when right student is found remove the old plan array
+                // and replace it with new one with added course
                 studentInfo.remove("courseplans");
                 studentInfo.put("courseplans", courseData);
                 studentData.remove(i);
@@ -105,11 +112,14 @@ public class OpiskelijaAsetus {
      * @param courseName  course that teacher chose to mark as completed
      */
     public void addDoneCourse(String studentNumber, String courseName) {
+        // Iterating throught student data to find the right student
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
             if (studentNumber.equals(studentInfo.getString("studentnumber"))) {
                 JSONArray courseData = studentInfo.getJSONArray("coursesdone");
                 courseData.put(courseName);
+                // when right student is found remove the old completed array
+                // and replace it with new one with added course
                 studentInfo.remove("coursesdone");
                 studentInfo.put("coursesdone", courseData);
                 studentData.remove(i);
@@ -125,13 +135,18 @@ public class OpiskelijaAsetus {
      * @param courseName course that was chosen by user
      */
     public void removePlannedCourse (String studentNumber, String courseName) {
+        // Iterating throught student data to find the right student
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
             if (studentNumber.equals(studentInfo.getString("studentnumber"))) {
                 JSONArray courseData = studentInfo.getJSONArray("courseplans");
+                // Iterating the right array to remove given course
                 for (int a=0; a < courseData.length(); a++) {
                     if (courseName.equals(courseData.getString(a))) {
+                        // remve right course
                         courseData.remove(a);
+                        // after removing the right course remove whole array
+                        // and replace it with new one with out the removed course
                         studentInfo.remove("courseplans");
                         studentInfo.put("courseplans", courseData);
                         studentData.remove(i);
@@ -151,15 +166,17 @@ public class OpiskelijaAsetus {
      * and other for completed courses
      */
     public JSONArray getStudentCourses(String studentNumber) {
-        
+        // Iterating throught student data to find the right student
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
             if (studentNumber.equals(studentInfo.getString("studentnumber"))) {
+                // adding the found courses to new arrays
                 JSONArray studentDone = studentInfo.getJSONArray("coursesdone");
                 JSONArray studentPlan = studentInfo.getJSONArray("courseplans");
                 JSONArray returnable = new JSONArray();
                 returnable.put(studentDone);
                 returnable.put(studentPlan);
+                // returning one array containgin two course arrays
                 return returnable;
             }
         }
@@ -177,17 +194,19 @@ public class OpiskelijaAsetus {
         
         TreeMap<String, String> studentMap = new TreeMap<>();
         if (studentData.length() == 0) {
-            
+            // if no students have been added return empty treemap
             return studentMap;
         }
         else {
-            JSONArray numbersNames = new JSONArray();
+            // Iterating through student data and extracting all the names and
+            // student numbers
             for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
             
             String number = studentInfo.getString("studentnumber");
             String name = studentInfo.getString("name");
-            
+            // adding extracted names and student numbers to treemap 
+            // student number as key and name as value
             studentMap.put(number, name);
             
             }
@@ -200,6 +219,7 @@ public class OpiskelijaAsetus {
      */
     public void saveData() {
         try {
+            // Writing the edited student data back to the JSON-file
             FileWriter file = new FileWriter("src/students.json", false);
             file.write(studentData.toString());
             file.close();
