@@ -465,10 +465,6 @@ public class App extends Application{
             
         
         }
-        for (Iterator<Map.Entry<String, JSONObject>> it = filteredDataMap.entrySet().iterator(); it.hasNext();){
-            var set = it.next();
-            
-        }
         for (Iterator<Map.Entry<String, JSONObject>> it = filteredDataMap.entrySet().iterator(); it.hasNext();) {
                 var set = it.next();
                 if (searchterm == ""){
