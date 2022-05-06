@@ -39,6 +39,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 
 public class App extends Application{
@@ -321,6 +322,10 @@ public class App extends Application{
             stage.close(); 
                 });
         
+        // Rajaus hakulaatikko
+        Text filterDegreesTFName = new Text("Rajaa tutkinto-ohjelmia");
+        TextField filterDegreesTF = new TextField("");
+		
         // Rajaus checkboxit
         
         CheckBox bachDegreeCB = new CheckBox("Kandidaatin tutkinto");
@@ -330,6 +335,7 @@ public class App extends Application{
         
         Button btnUpdate = new Button("Päivitä");
         btnUpdate.setOnAction(e -> updateComboBox(comboBox,
+                                                  filterDegreesTF.getText(),
                                                   bachDegreeCB.isSelected(), 
                                                   mastDegreeCB.isSelected(),
                                                   doctDegreeCB.isSelected(),
@@ -345,11 +351,13 @@ public class App extends Application{
         gridPaneS2.setHgap(20);
         gridPaneS2.add(comboBox, 0, 0);
         gridPaneS2.add(btnCloseScene2, 0, 1);
-        gridPaneS2.add(bachDegreeCB, 1, 0);
-        gridPaneS2.add(mastDegreeCB, 1, 1);
-        gridPaneS2.add(doctDegreeCB, 1, 2);
-        gridPaneS2.add(miscDegreeCB, 1, 3);
-        gridPaneS2.add(btnUpdate, 1, 4);
+        gridPaneS2.add(filterDegreesTFName, 1, 0);
+        gridPaneS2.add(filterDegreesTF, 1, 1);
+        gridPaneS2.add(bachDegreeCB, 1, 2);
+        gridPaneS2.add(mastDegreeCB, 1, 3);
+        gridPaneS2.add(doctDegreeCB, 1, 4);
+        gridPaneS2.add(miscDegreeCB, 1, 5);
+        gridPaneS2.add(btnUpdate, 1, 6);
         
         
         gridPaneS2.setAlignment(Pos.CENTER);
@@ -426,6 +434,7 @@ public class App extends Application{
     }
     
     private void updateComboBox(ComboBox comboBox,
+                                String searchterm,
                                 boolean bachDegree, boolean mastDegree,
                                 boolean doctDegree, boolean miscDegree,
                                 HandleApi apiHandler,
@@ -456,10 +465,21 @@ public class App extends Application{
             
         
         }
+        for (Iterator<Map.Entry<String, JSONObject>> it = filteredDataMap.entrySet().iterator(); it.hasNext();){
+            var set = it.next();
+            
+        }
         for (Iterator<Map.Entry<String, JSONObject>> it = filteredDataMap.entrySet().iterator(); it.hasNext();) {
                 var set = it.next();
-                comboBox.getItems().add(set.getKey());
+                if (searchterm == ""){
+                    comboBox.getItems().add(set.getKey());
+                }
+                else {
+                    if (set.getKey().toLowerCase().contains(searchterm.toLowerCase())){
+                        comboBox.getItems().add(set.getKey());
+                }
             }
+        }
     }
 
     private String getTreeItemName(String item){
