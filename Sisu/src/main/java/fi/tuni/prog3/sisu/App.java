@@ -193,6 +193,7 @@ public class App extends Application{
                                                 
                                                 if(coursesPlanned.contains(courseName)){
                                                     coursesPlanned.remove(courseName);
+                                                    studentHelper.removePlannedCourse(currentStudent.get(0), courseName);
                                                     
                                                     plannedCourses.getItems().clear();
                                                 
