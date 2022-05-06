@@ -1,5 +1,10 @@
 package fi.tuni.prog3.sisu;
 
+/**
+ * Main class for running the gui
+ */
+
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -46,16 +51,23 @@ public class App extends Application{
     
     
 
+    /**
+     * Starts the application
+     * @param stage
+     * @throws IOException 
+     */
     @Override
     public void start(Stage stage) throws IOException {
         
 
-        var button = new Button("Sisään SISUun");
+        var button = new Button("Vierailija");
         stage.setTitle("Melkein parempi SISU");
         
         // lisätään nappula opiskelijan valinnalle
-        Button btnOpiskelija = new Button();
-        btnOpiskelija.setText("Opiskelija");
+        Button btnStudent = new Button();
+        btnStudent.setText("Opiskelija");
+        
+        Button btnTeacher = new Button("Opettaja");
         
         OpiskelijaAsetus studentHelper = new OpiskelijaAsetus();
         
@@ -64,6 +76,11 @@ public class App extends Application{
         
         // Taman avulla voi tallettaa opiskelijanumeron lambdafunktiosta
         ArrayList<String> currentStudent = new ArrayList<>();
+        
+        boolean[] isTeacher = new boolean[1];
+        isTeacher[0] = false;
+        
+        
         
         
         
@@ -78,7 +95,7 @@ public class App extends Application{
             stage.close(); 
                 });
         
-        VBox startBox = new VBox(button, btnOpiskelija, btnClose);
+        VBox startBox = new VBox(button, btnStudent, btnTeacher, btnClose);
         startBox.setAlignment(Pos.CENTER);
         startBox.setSpacing(10);
         
@@ -90,14 +107,7 @@ public class App extends Application{
         ComboBox comboBox = apiHandler.getInitialData(programDataMap);
         comboBox.setPromptText("Valitse tutkinto-ohjelma");
         
-        //treeView.setRoot(rootItem);
         
-        //ArrayList<TreeItem<String>> firstChildren = getInitialData();
-        /*
-        firstChildren.forEach(item -> {
-            rootItem.getChildren().add(item);
-        });
-        */
         Button btnBack = new Button("Takaisin");
         
         ListView completedCourses = new ListView();
@@ -164,7 +174,7 @@ public class App extends Application{
                                         Label nameLabel = new Label(courseName);
                                         
                                         Button btnAddCompleted = new Button("Lisää suoritus");
-                                        Button btnRemoveCompleted = new Button("Poista suoritus");
+                                        
                                         Button btnAddPlan = new Button("Lisää suunnitelmaan");
                                         Button btnRemovePlan = new Button("Poista suunnitelmasta");
                                         Button btnBack = new Button("Takaisin");
@@ -236,7 +246,14 @@ public class App extends Application{
                                         });
                                         
                                         
-                                        VBox courseBox = new VBox(nameLabel, btnAddCompleted, btnRemoveCompleted, btnAddPlan, btnRemovePlan, btnBack);
+                                        VBox courseBox = new VBox(nameLabel);
+                                        
+                                        if(isTeacher[0]){
+                                            courseBox.getChildren().add(btnAddCompleted);
+                                        }
+                                        
+                                        courseBox.getChildren().addAll(btnAddPlan, btnRemovePlan, btnBack);
+                                        
                                         courseBox.setAlignment(Pos.CENTER);
                                         courseBox.setSpacing(10);
                                         
@@ -316,7 +333,6 @@ public class App extends Application{
         
         Scene sceneStu = new Scene (gridPaneStu, 1280, 720);
         closeStu.setOnAction(eh -> {
-            
             stage.setScene(scene);
                 });
         
@@ -383,8 +399,13 @@ public class App extends Application{
             
         });
         
-        btnOpiskelija.setOnAction(eh -> stage.setScene(sceneStu));
+        btnStudent.setOnAction(eh -> stage.setScene(sceneStu));
         button.setOnAction(e -> stage.setScene(scene2));
+        
+        btnTeacher.setOnAction(btnTeacherEvent ->{
+           isTeacher[0] = true;
+           stage.setScene(sceneStu);
+        });
         
         
         stage.setScene(scene);
