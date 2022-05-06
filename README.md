@@ -87,6 +87,7 @@ sekä alustaa tyhjän listat suoritetuille ja suunnitetuille kursseille.
 
 Kokonaan Jetro.
 
+GUI-testausta kirjautumisen ja filtteröinnin osalta ja JUnit testi yhdelle poikkeukselle.
 
 #### Javadoc-kommentit
 
