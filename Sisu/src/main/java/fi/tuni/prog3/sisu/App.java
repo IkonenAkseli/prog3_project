@@ -57,6 +57,12 @@ public class App extends Application{
         
         OpiskelijaAsetus studentHelper = new OpiskelijaAsetus();
         
+        ArrayList<String> coursesDone = new ArrayList<>();
+        ArrayList<String> coursesPlanned = new ArrayList<>();
+        
+        // Taman avulla voi tallettaa opiskelijanumeron lambdafunktiosta
+        ArrayList<String> currentStudent = new ArrayList<>();
+        
         
         
         
@@ -153,6 +159,43 @@ public class App extends Application{
                                         Button btnRemovePlan = new Button("Poista suunnitelmasta");
                                         Button btnBack = new Button("Takaisin");
                                         
+                                        btnAddPlan.setOnAction(addHandle ->{
+                                            if (coursesPlanned.contains(courseName)){
+                                                nameLabel.setText(courseName + "\nKurssi on jo suunnitelmassa!");
+                                            }
+                                            else {
+                                                studentHelper.addPlannedCourse(currentStudent.get(0), courseName);
+                                                coursesPlanned.add(courseName);
+                                                nameLabel.setText(courseName + "\nLisätty suunnitelmaan!");
+                                            }
+                                        });
+                                        
+                                        btnAddCompleted.setOnAction(addHandle ->{
+                                            
+                                            if (coursesDone.contains(courseName)){
+                                                nameLabel.setText(courseName + "\nKurssi on jo suorituksissa!");
+                                            }
+                                            else{
+                                                studentHelper.addDoneCourse(currentStudent.get(0), courseName);
+                                                coursesDone.add(courseName);
+                                                nameLabel.setText(courseName + "\nLisätty suorituksiin!");
+                                            }
+                                            
+                                        });
+                                        
+                                        btnRemovePlan.setOnAction(addHandle ->{
+                                            
+                                            if (!coursesPlanned.contains(courseName)){
+                                                nameLabel.setText(courseName + "\nKurssi ei ole suunnitelmassa!");
+                                            }
+                                            else{
+                                                studentHelper.removePlannedCourse(currentStudent.get(0), courseName);
+                                                coursesPlanned.remove(courseName);
+                                                nameLabel.setText(courseName + "\nPoistettu suunnitelmasta!");
+                                            }
+                                            
+                                        });
+                                        
                                         btnBack.setOnAction(et -> {
                                             stage.setScene(scene3);
                                         });
@@ -199,37 +242,7 @@ public class App extends Application{
         Button closeStu = new Button();
         closeStu.setText("Takaisin");
         
-        addStu.setOnAction((ActionEvent ehs) -> {
-            String number = stuNumber.getText();
-            String name = stuName.getText();
-            
-            String coursesStr = studentHelper.getStudentCourses("K244522").get(0).toString();
-            JSONArray coursesArr = new JSONArray(coursesStr);
-            
-            for (var x: coursesArr){
-                System.out.println(x.toString());
-            }
-            
-            
-            
-            
-            TreeMap<String,String> studentNumbers = studentHelper.getStudents();
-            
-            if(name == null || name.length() == 0 || name.equals("Nimi")
-                    || number == null ||number.length() == 0){
-                return;
-            }
-            else if(!studentNumbers.containsKey(number)){
-                studentHelper.addStudent(number, name);
-            }
-            else if(!studentNumbers.get(number).equals(name)){
-                return;
-            }
-            else {
-                
-            }
-            
-        });
+        
         
         
         GridPane gridPaneStu = new GridPane();
@@ -249,7 +262,10 @@ public class App extends Application{
         
         Button btnCloseScene2 = new Button();
         btnCloseScene2.setText("Sulje"); 
-        btnCloseScene2.setOnAction( e -> stage.close() );
+        btnCloseScene2.setOnAction( e -> {
+            studentHelper.saveData();
+            stage.close(); 
+                });
         
         // Rajaus checkboxit
         
@@ -268,8 +284,8 @@ public class App extends Application{
                                                   programDataMap));
         
         
-        VBox rootBox = new VBox();
-        rootBox.getChildren().addAll(comboBox, btnCloseScene2);
+        /*VBox rootBox = new VBox();
+        rootBox.getChildren().addAll(comboBox, btnCloseScene2);*/
         
         GridPane gridPaneS2 = new GridPane();
         gridPaneS2.setHgap(20);
@@ -298,6 +314,57 @@ public class App extends Application{
         
         stage.setScene(scene);
         stage.show();
+        
+        
+        addStu.setOnAction((ActionEvent ehs) -> {
+            String number = stuNumber.getText();
+            String name = stuName.getText();
+            
+            
+            System.out.println(number);
+            
+            
+            
+            TreeMap<String,String> studentNumbers = studentHelper.getStudents();
+            
+            System.out.println(studentNumbers);
+            
+            if(name == null || name.length() == 0 || name.equals("Nimi")
+                    || number == null ||number.length() == 0){
+                return;
+            }
+            else if(!studentNumbers.containsKey(number)){
+                System.out.println("Eka");
+                studentHelper.addStudent(number, name);
+            }
+            else if(!studentNumbers.get(number).equals(name)){
+                System.out.println("Toka else if");
+                return;
+            }
+            else {
+                String coursesStr = studentHelper.getStudentCourses(number).get(0).toString();
+                JSONArray coursesArr = new JSONArray(coursesStr);
+                System.out.println(coursesArr);
+                
+                for (var course: coursesArr){
+                    String courseName = course.toString();
+                    coursesDone.add(courseName);
+                }
+                String coursePlansStr = studentHelper.getStudentCourses(number).get(1).toString();
+                JSONArray coursePlansArr = new JSONArray(coursePlansStr);
+                
+                for (var course: coursePlansArr){
+                    String courseName = course.toString();
+                    coursesPlanned.add(courseName);
+                }
+                
+            }
+            currentStudent.add(number);
+            
+            System.out.println(coursesPlanned);
+            System.out.println(coursesDone);
+            stage.setScene(scene2);
+        });
     }
 
     public static void main(String[] args) {
