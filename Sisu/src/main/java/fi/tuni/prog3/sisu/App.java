@@ -189,7 +189,7 @@ public class App extends Application{
                                     // Only move forward if the clicked item was
                                     // a course
                                     if (allCourses.containsKey(courseName)){
-                                        System.out.println(courseName);
+                                        
                                         
                                         Label nameLabel = new Label(courseName);
                                         
@@ -203,6 +203,9 @@ public class App extends Application{
                                         btnAddPlan.setOnAction(addHandle ->{
                                             if (coursesPlanned.contains(courseName)){
                                                 nameLabel.setText(courseName + "\nKurssi on jo suunnitelmassa!");
+                                            }
+                                            else if (coursesDone.contains(courseName)){
+                                                nameLabel.setText(courseName + "\nKurssi on jo suorituksissa!");
                                             }
                                             else {
                                                 studentHelper.addPlannedCourse(currentStudent.get(0), courseName);

@@ -19,6 +19,7 @@ on mahdollista.
 Puunäkymässä näytetään koko tuktinto-ohjelman rakenne ja kurssit treeviewissä. Ikkunan oikealla reunalla on lista suorituksista ja
 suunnitelmasta. Kurssin pääsee lisäämään/poistamaan suunnitelmasta klikkaamalla kurssia ja valitsemalla aukeavasta ikkunasta
 haluttu toimenpide. Jos ohjelman alussa valittiin opettajarooli, voi kurssin tuossa ikkunassa lisätä tarkasteltavan opiskelijan
-suorituksiin. Suunnitelmassa olevan kurssin lisääminen suorituksiin poistaa kurssin suunnitelmasta.
+suorituksiin. Suunnitelmassa olevan kurssin lisääminen suorituksiin poistaa kurssin suunnitelmasta. Opiskelijan opintopisteet
+näkyvät vasemmassa alareunassa. Ohjelma laskee vain valitun tuktinto-ohjelman suoritettujen kurssien opintopisteitä.
 
 
