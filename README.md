@@ -42,7 +42,7 @@ Ohjelman alussa voi valita haluaako toimia opettajana vai oppilaana. Opettajaroo
 
 Päävastuu: Akseli.
 
-Jetro toteuttanut updateComboBox ja sen vaatimat GUI-elementit, Antti toteuttanut Opiskelijavalinnan GUI:n.
+Jetro toteuttanut updateComboBox ja sen vaatimat GUI-elementit, Antti toteuttanut aloitusnäytöstä löytyvän Opiskelijavalinnan GUI:n.
 Akseli tehnyt loput.
 
 Pyörittää käyttöliittymää ja sisältää paljon ohjelman toiminnna logiikkaa.
