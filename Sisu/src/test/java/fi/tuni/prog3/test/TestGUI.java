@@ -30,19 +30,25 @@ import org.testfx.matcher.base.NodeMatchers;
  */
 public class TestGUI extends TestFX {
     
-    final String OPISKELIJA_NAME = "Opiskelija";
-    final String SULJE_NAME = "Sulje";
+    final String STUDENT_LOGIN = "Opiskelija";
+    final String TEACHER_LOGIN = "Opettaja";
+    final String STUDENT_ID_FIELD = "Opiskelijanumero";
+    final String STUDENT_NAME_FIELD = "Nimi";
+    final String STUDENT_ID = "H123456";
+    final String STUDENT_NAME = "Lissu";
+    final String BAD_STUDENT_NAME = "Pelikaani-Sakke";
+    final String LOGIN = "Sisään";
+    final String VERIFICATION_TEXT = "Rajaa tutkinto-ohjelmia";
+    final String UPDATE = "Päivitä";
+    final String CHOOSE_DEGREE = "Valitse tutkinto-ohjelma";
+    final String FILTER_BACH = "Kandidaatin tutkinto";
+    final String FILTER_MAST = "Maisterin tutkinto";
+    final String FILTER_DOCT = "Tohtorin/Lisensiaatin tutkinto";
+    final String FILTER_MISC = "Erikoislääkäri koulutus";
     
     
     @Test //Tarkista, että sisään kirjautuminen onnistuu
     public void studentLogin(){
-        String STUDENT_LOGIN = "Opiskelija";
-        String STUDENT_ID_FIELD = "Opiskelijanumero";
-        String STUDENT_NAME_FIELD = "Nimi";
-        String STUDENT_ID = "H123456";
-        String STUDENT_NAME = "Lissu";
-        String LOGIN = "Sisään";
-        String VERIFICATION_TEXT = "Rajaa tutkinto-ohjelmia";
         clickOn(STUDENT_LOGIN);
         clickOn(STUDENT_NAME_FIELD).write(STUDENT_NAME);
         clickOn(STUDENT_ID_FIELD).write(STUDENT_ID);
@@ -50,13 +56,15 @@ public class TestGUI extends TestFX {
         verifyThat(VERIFICATION_TEXT, NodeMatchers.isVisible());
     }
     @Test
+    public void teacherLogin(){
+        clickOn(TEACHER_LOGIN);
+        clickOn(STUDENT_NAME_FIELD).write(STUDENT_NAME);
+        clickOn(STUDENT_ID_FIELD).write(STUDENT_ID);
+        clickOn(LOGIN);
+        verifyThat(VERIFICATION_TEXT, NodeMatchers.isVisible());
+    }
+    @Test
     public void chooseDegree() {
-        String STUDENT_LOGIN = "Opiskelija";
-        String STUDENT_ID_FIELD = "Opiskelijanumero";
-        String STUDENT_NAME_FIELD = "Nimi";
-        String STUDENT_ID = "H123456";
-        String STUDENT_NAME = "Lissu";
-        String LOGIN = "Sisään";
         String CHOOSE_DEGREE = "Valitse tutkinto-ohjelma";
         String DEGREE = "Arkkitehtuurin kandidaattiohjelma";
         String VERIFY = "Arkkitehtuurin kandidaattiohjelman yhteiset opinnot";
@@ -102,20 +110,14 @@ public class TestGUI extends TestFX {
         clickOn(UPDATE);
         clickOn(CHOOSE_DEGREE);
         verifyThat(ANECDOTAL_BACH, NodeMatchers.isVisible());
-    }
+    }*/
     @Test
     public void filterBachAndMast() {
-        String LOGIN = "Sisään SISUun";
-        String CHOOSE_DEGREE = "Valitse tutkinto-ohjelma";
-        String FILTER_BACH = "Kandidaatin tutkinto";
-        String FILTER_MAST = "Maisterin tutkinto";
-        String FILTER_DOCT = "Tohtorin/Lisensiaatin tutkinto";
-        String FILTER_MISC = "Erikoislääkäri koulutus";
         String ANECDOTAL_BACH = "Filosofian kandidaattiohjelma";
         String ANECDOTAL_MAST = "Filosofian maisteriohjelma";
-        String ANECDOTAL_DOCT = "Historian tohtoriohjelma";
-        String ANECDOTAL_MISC = "Foniatrian erikoislääkärikoulutus (56/2015)";
-        String UPDATE = "Päivitä";
+        clickOn(STUDENT_LOGIN);
+        clickOn(STUDENT_NAME_FIELD).write(STUDENT_NAME);
+        clickOn(STUDENT_ID_FIELD).write(STUDENT_ID);
         clickOn(LOGIN);
         clickOn(FILTER_BACH);
         clickOn(FILTER_MAST);
@@ -123,7 +125,7 @@ public class TestGUI extends TestFX {
         clickOn(CHOOSE_DEGREE);
         verifyThat(ANECDOTAL_BACH, NodeMatchers.isVisible());
         verifyThat(ANECDOTAL_MAST, NodeMatchers.isVisible());
-    }
+    }/*
     @Test
     public void filterDoct() {
         String LOGIN = "Sisään SISUun";
