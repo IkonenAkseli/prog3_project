@@ -35,6 +35,17 @@ public class OpiskelijaAsetus {
             studentData = new JSONArray(jsonString);
         } catch (IOException ex) {
             Logger.getLogger(OpiskelijaAsetus.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+            // Writing the edited student data back to the JSON-file
+            FileWriter file = new FileWriter("src/students.json", false);
+            file.write("[]");
+            file.close();
+            
+            studentData = new JSONArray("[]");
+        }
+        
+            catch (IOException e) {
+            }
             
         }
         
