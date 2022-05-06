@@ -4,9 +4,6 @@ import org.json.JSONObject;
 import org.json.JSONArray;  
 import java.io.FileWriter;
 import java.io.IOException;
-/*import net.sf.json.JSONObject;
-import net.sf.json.JSONSerializer;
-import org.apache.commons.io.IOUtils; */
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,11 +11,22 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * 
+ * class that handles writing and reading the JSON-file 
+ * with student data in it.
+ */
+
 public class OpiskelijaAsetus {
     
+    // Variable where student data is stored while the program is runnig.
     private JSONArray studentData;
     
-    
+    /**
+     * Reads the JSON-file where student data is stored and saves it into 
+     * studentData variable for the duration of programs running.
+     * @throws IOExeption
+     */
     public OpiskelijaAsetus(){
         Path path = Paths.get("src/students.json");
         String jsonString = "";
@@ -31,10 +39,21 @@ public class OpiskelijaAsetus {
         }
         
     }
-
+    
+    /**
+     * @return studentData varibale that contains all the student data
+     */
     public JSONArray getStudentData() {
         return studentData;
     }
+    
+    /**
+     * initializes new student object and adds it into studentData variable
+     * @param studentNumber user given variably which has his student number
+     * @param name user given variable which has his name
+     * @return true/false depending if the student already exists, flase if does
+     * true if doesn't
+     */
     public boolean addStudent(String studentNumber, String name) {
         
         
@@ -60,6 +79,12 @@ public class OpiskelijaAsetus {
         return true;
         
     }
+    
+    /**
+     * Adds new course into student's planned courses
+     * @param studentNumber user given variable which he gave during login in
+     * @param courseName course that was chosen by user
+     */
     public void addPlannedCourse(String studentNumber, String courseName) {
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
@@ -74,6 +99,12 @@ public class OpiskelijaAsetus {
         }
     }
     
+    /**
+     * Adds new course into student's copleted courses only can be add while
+     * logged in as teacher
+     * @param studentNumber student's number that teacher chose while login in 
+     * @param courseName  course that teacher chose to mark as completed
+     */
     public void addDoneCourse(String studentNumber, String courseName) {
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
@@ -89,6 +120,11 @@ public class OpiskelijaAsetus {
         }
     }
     
+    /**
+     * Removes chosen course from stundent's planned courses
+     * @param studentNumber user given variable which he gave during login in
+     * @param courseName course that was chosen by user
+     */
     public void removePlannedCourse (String studentNumber, String courseName) {
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
@@ -108,6 +144,13 @@ public class OpiskelijaAsetus {
         }
     }
     
+    /**
+     * Finds the given student from studentData variable and gets his planned 
+     * and completed courses into two new lists
+     * @param studentNumber user given variable which he gave during login in
+     * @return JSONArray which has two JSONArrays inside one for plannedcourses
+     * and other for completed courses
+     */
     public JSONArray getStudentCourses(String studentNumber) {
         
         for (int i=0; i < studentData.length(); i++) {
@@ -126,9 +169,13 @@ public class OpiskelijaAsetus {
         JSONArray noData = new JSONArray();
             return noData;
     }
+    
+    /**
+     * Gets all the student into treemap student number as key and name as value
+     * @return counstructed treemap
+     */
     public TreeMap<String, String> getStudents(){
         
-        JSONArray empty = new JSONArray();
         TreeMap<String, String> studentMap = new TreeMap<>();
         if (studentData.length() == 0) {
             
@@ -139,23 +186,19 @@ public class OpiskelijaAsetus {
             for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
             
-            
-            
-            JSONObject student = new JSONObject();
             String number = studentInfo.getString("studentnumber");
             String name = studentInfo.getString("name");
             
-            student.put("studentnumber", number);
-            student.put("name", name);
-            
             studentMap.put(number, name);
-            
-            numbersNames.put(student);
             
             }
             return studentMap;
         }
     }
+    
+    /**
+     * When program is closed writes all the changes into the JSON-file
+     */
     public void saveData() {
         try {
             FileWriter file = new FileWriter("src/students.json", false);
