@@ -73,3 +73,9 @@ Akseli tehnyt pieniä korjauksia ja parannuksia, muuten täysin Antti.
 #### Yksikkötestit
 
 Kokonaan Jetro.
+
+
+#### Javadoc-kommentit
+
+Kommentit generoitu netBeansilla, joten eivät taida mennä gittiin. Tämän voi replikoida ajamalla run generate javadoc.
+Kommentit Kirjoitettu käyttäen samaa työnjakoa kuin koodin kirjoittamiseen.
