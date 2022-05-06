@@ -128,7 +128,10 @@ public class App extends Application{
                         VBox treeBox = new VBox();
                         Button btnCloseScene3 = new Button();
                         btnCloseScene3.setText("Sulje"); 
-                        btnCloseScene3.setOnAction( e3 -> stage.close() );
+                        btnCloseScene3.setOnAction( e3 -> {
+                            studentHelper.saveData();
+                            stage.close(); 
+                                });
                         
                         Scene scene3 = new Scene(treeBox, 1280, 720);
                         
@@ -239,7 +242,10 @@ public class App extends Application{
         gridPaneStu.setAlignment(Pos.CENTER);
         
         Scene sceneStu = new Scene (gridPaneStu, 1280, 720);
-        closeStu.setOnAction(eh -> stage.setScene(scene));
+        closeStu.setOnAction(eh -> {
+            studentHelper.saveData();
+            stage.close(); 
+                });
         
         Button btnCloseScene2 = new Button();
         btnCloseScene2.setText("Sulje"); 
