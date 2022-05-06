@@ -100,7 +100,8 @@ public class App extends Application{
         */
         Button btnBack = new Button("Takaisin");
         
-        
+        ListView completedCourses = new ListView();
+        ListView plannedCourses = new ListView();
         
         // Valitaan
         comboBox.setOnAction(new EventHandler() {
@@ -144,8 +145,7 @@ public class App extends Application{
                         GridPane gridPaneTree = new GridPane();
                         gridPaneTree.setHgap(20);
                         
-                        ListView completedCourses = new ListView();
-                        ListView plannedCourses = new ListView();
+                        
 
                         gridPaneTree.setAlignment(Pos.CENTER);
                         
@@ -290,20 +290,25 @@ public class App extends Application{
             }
         });
         
-        TextField stuNumber = new TextField("Opiskelijanumero");
-        TextField stuName = new TextField("Nimi");
+        TextField stuNumber = new TextField();
+        TextField stuName = new TextField();
         Button addStu = new Button();
         addStu.setText("Sisään");
         Button closeStu = new Button();
         closeStu.setText("Takaisin");
+        Label stuLabel = new Label("Syötä tiedot:");
+        
+        stuNumber.setPromptText("Opiskelijanumero");
+        stuName.setPromptText("Nimi");
         
         
         
         
         GridPane gridPaneStu = new GridPane();
         gridPaneStu.setHgap(20);
-        gridPaneStu.add(stuNumber, 0, 0);
-        gridPaneStu.add(stuName, 0, 1);
+        gridPaneStu.add(stuLabel, 0, 0);
+        gridPaneStu.add(stuNumber, 0, 1);
+        gridPaneStu.add(stuName, 0, 2);
         gridPaneStu.add(addStu, 1, 1);
         gridPaneStu.add(closeStu, 1, 2);
         
@@ -311,8 +316,8 @@ public class App extends Application{
         
         Scene sceneStu = new Scene (gridPaneStu, 1280, 720);
         closeStu.setOnAction(eh -> {
-            studentHelper.saveData();
-            stage.close(); 
+            
+            stage.setScene(scene);
                 });
         
         Button btnCloseScene2 = new Button();
@@ -344,8 +349,15 @@ public class App extends Application{
                                                   programDataMap));
         
         
-        /*VBox rootBox = new VBox();
-        rootBox.getChildren().addAll(comboBox, btnCloseScene2);*/
+        Button btnToStart = new Button("Takaisin");
+        btnToStart.setOnAction(backBtn -> {
+            coursesDone.clear();
+            coursesPlanned.clear();
+
+            completedCourses.getItems().clear();
+            plannedCourses.getItems().clear();
+            stage.setScene(scene); 
+        });
         
         GridPane gridPaneS2 = new GridPane();
         gridPaneS2.setHgap(20);
@@ -358,6 +370,7 @@ public class App extends Application{
         gridPaneS2.add(doctDegreeCB, 1, 4);
         gridPaneS2.add(miscDegreeCB, 1, 5);
         gridPaneS2.add(btnUpdate, 1, 6);
+        gridPaneS2.add(btnToStart, 0, 2);
         
         
         gridPaneS2.setAlignment(Pos.CENTER);
@@ -383,30 +396,32 @@ public class App extends Application{
             String name = stuName.getText();
             
             
-            System.out.println(number);
+            
             
             
             
             TreeMap<String,String> studentNumbers = studentHelper.getStudents();
             
-            System.out.println(studentNumbers);
+            
             
             if(name == null || name.length() == 0 || name.equals("Nimi")
                     || number == null ||number.length() == 0){
                 return;
             }
             else if(!studentNumbers.containsKey(number)){
-                System.out.println("Eka");
+                
                 studentHelper.addStudent(number, name);
             }
             else if(!studentNumbers.get(number).equals(name)){
-                System.out.println("Toka else if");
+                stuLabel.setText("Opsikelijanumerolla on eri nimi");
                 return;
             }
             else {
+                
+                
                 String coursesStr = studentHelper.getStudentCourses(number).get(0).toString();
                 JSONArray coursesArr = new JSONArray(coursesStr);
-                System.out.println(coursesArr);
+                
                 
                 for (var course: coursesArr){
                     String courseName = course.toString();
@@ -421,10 +436,10 @@ public class App extends Application{
                 }
                 
             }
+            currentStudent.clear();
             currentStudent.add(number);
             
-            System.out.println(coursesPlanned);
-            System.out.println(coursesDone);
+            
             stage.setScene(scene2);
         });
     }
