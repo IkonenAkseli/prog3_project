@@ -37,6 +37,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javafx.scene.control.TextField;
+
 
 public class App extends Application{
     
@@ -55,7 +57,8 @@ public class App extends Application{
         
         OpiskelijaAsetus studentHelper = new OpiskelijaAsetus();
         
-        btnOpiskelija.setOnAction(eh -> {System.out.println(studentHelper.getStudents());});
+        
+        
         
         
         // Talletetaan kaikki opintosuunnat tanne
@@ -182,6 +185,26 @@ public class App extends Application{
             }
         });
         
+        TextField stuNumber = new TextField();
+        TextField stuName = new TextField();
+        Button addStu = new Button();
+        addStu.setText("Lisää");
+        Button closeStu = new Button();
+        closeStu.setText("Takaisin");
+        
+        
+        GridPane gridPaneStu = new GridPane();
+        gridPaneStu.setHgap(20);
+        gridPaneStu.add(stuNumber, 0, 0);
+        gridPaneStu.add(stuName, 0, 1);
+        gridPaneStu.add(addStu, 1, 0);
+        gridPaneStu.add(closeStu, 1, 1);
+        
+        gridPaneStu.setAlignment(Pos.CENTER);
+        
+        Scene sceneStu = new Scene (gridPaneStu, 1280, 720);
+        closeStu.setOnAction(eh -> stage.setScene(scene));
+        
         Button btnCloseScene2 = new Button();
         btnCloseScene2.setText("Sulje"); 
         btnCloseScene2.setOnAction( e -> stage.close() );
@@ -227,6 +250,7 @@ public class App extends Application{
             
         });
         
+        btnOpiskelija.setOnAction(eh -> stage.setScene(sceneStu));
         button.setOnAction(e -> stage.setScene(scene2));
         
         
