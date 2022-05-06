@@ -65,10 +65,14 @@ public class App extends Application{
         HashMap<String, JSONObject> programDataMap = new HashMap<>();
         Button btnClose = new Button(); 
         btnClose.setText("Sulje"); 
-        btnClose.setOnAction( e -> stage.close() );
+        btnClose.setOnAction( e -> {
+            studentHelper.saveData();
+            stage.close(); 
+                });
         
         VBox startBox = new VBox(button, btnOpiskelija, btnClose);
         startBox.setAlignment(Pos.CENTER);
+        startBox.setSpacing(10);
         
         var scene = new Scene(startBox, 1280, 720);
         
@@ -188,9 +192,41 @@ public class App extends Application{
         TextField stuNumber = new TextField("Opiskelijanumero");
         TextField stuName = new TextField("Nimi");
         Button addStu = new Button();
-        addStu.setText("Lisää");
+        addStu.setText("Sisään");
         Button closeStu = new Button();
         closeStu.setText("Takaisin");
+        
+        addStu.setOnAction((ActionEvent ehs) -> {
+            String number = stuNumber.getText();
+            String name = stuName.getText();
+            
+            String coursesStr = studentHelper.getStudentCourses("K244522").get(0).toString();
+            JSONArray coursesArr = new JSONArray(coursesStr);
+            
+            for (var x: coursesArr){
+                System.out.println(x.toString());
+            }
+            
+            
+            
+            
+            TreeMap<String,String> studentNumbers = studentHelper.getStudents();
+            
+            if(name == null || name.length() == 0 || name.equals("Nimi")
+                    || number == null ||number.length() == 0){
+                return;
+            }
+            else if(!studentNumbers.containsKey(number)){
+                studentHelper.addStudent(number, name);
+            }
+            else if(!studentNumbers.get(number).equals(name)){
+                return;
+            }
+            else {
+                
+            }
+            
+        });
         
         
         GridPane gridPaneStu = new GridPane();

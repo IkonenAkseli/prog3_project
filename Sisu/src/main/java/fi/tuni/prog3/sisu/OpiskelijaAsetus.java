@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils; */
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -91,10 +92,10 @@ public class OpiskelijaAsetus {
     public void removePlannedCourse (String studentNumber, String courseName) {
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
-            if (studentNumber == studentInfo.getString("studentnumber")) {
+            if (studentNumber.equals(studentInfo.getString("studentnumber"))) {
                 JSONArray courseData = studentInfo.getJSONArray("courseplans");
                 for (int a=0; a < courseData.length(); a++) {
-                    if (courseName == courseData.getString(a)) {
+                    if (courseName.equals(courseData.getString(a))) {
                         courseData.remove(a);
                         studentInfo.remove("courseplans");
                         studentInfo.put("courseplans", courseData);
@@ -111,7 +112,7 @@ public class OpiskelijaAsetus {
         
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
-            if (studentNumber == studentInfo.getString("studentnumber")) {
+            if (studentNumber.equals(studentInfo.getString("studentnumber"))) {
                 JSONArray studentDone = studentInfo.getJSONArray("coursesdone");
                 JSONArray studentPlan = studentInfo.getJSONArray("courseplans");
                 JSONArray returnable = new JSONArray();
@@ -125,17 +126,20 @@ public class OpiskelijaAsetus {
         JSONArray noData = new JSONArray();
             return noData;
     }
-    public JSONArray getStudents(){
+    public TreeMap<String, String> getStudents(){
         
         JSONArray empty = new JSONArray();
+        TreeMap<String, String> studentMap = new TreeMap<>();
         if (studentData.length() == 0) {
             
-            return empty;
+            return studentMap;
         }
         else {
             JSONArray numbersNames = new JSONArray();
             for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
+            
+            
             
             JSONObject student = new JSONObject();
             String number = studentInfo.getString("studentnumber");
@@ -144,10 +148,12 @@ public class OpiskelijaAsetus {
             student.put("studentnumber", number);
             student.put("name", name);
             
+            studentMap.put(number, name);
+            
             numbersNames.put(student);
             
             }
-            return numbersNames;
+            return studentMap;
         }
     }
     public void saveData() {
