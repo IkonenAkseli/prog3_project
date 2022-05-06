@@ -31,23 +31,16 @@ public class OpiskelijaAsetus {
         
     }
 
-    
+    public JSONArray getStudentData() {
+        return studentData;
+    }
     public boolean addStudent(String studentNumber, String name) {
         
         
-        String fileData = "src/students.json";
-        Path path = Paths.get("src/students.json");
-        String jsonString = "";
-        try {
-            jsonString = Files.readString(path);
-        } catch (IOException ex) {
-            Logger.getLogger(OpiskelijaAsetus.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-        JSONArray students = new JSONArray(jsonString);
+       
         
-        for (int i=0; i < students.length(); i++) {
-            JSONObject studentInfo = students.getJSONObject(i);
+        for (int i=0; i < studentData.length(); i++) {
+            JSONObject studentInfo = studentData.getJSONObject(i);
             if (studentNumber.equals(studentInfo.getString("studentnumber"))) {
                 return false;
             }
@@ -62,10 +55,10 @@ public class OpiskelijaAsetus {
         student.put("coursesdone", coursesDone);
         student.put("courseplans", coursePlans);
         
-        students.put(student);
+        studentData.put(student);
         try {
             FileWriter file = new FileWriter("src/students.json", false);
-            file.write(students.toString());
+            file.write(studentData.toString());
             file.close();
             return true;
         }
@@ -74,66 +67,83 @@ public class OpiskelijaAsetus {
          return false;
       }
     }
-    /*
-    public boolean editStudentData(String studentNumber, JSONArray tehdytkurssitiedot, suunnitellutKurssit) {
-        String fileData = "src/students.json";
-        JSONArray students = new JSONArray(fileData);
-        
-        for (int i=0; i < students.length(); i++) {
-            JSONObject studentInfo = students.getJSONObject(i);
+    public void addPlannedCourse(String studentNumber, String courseName) {
+        for (int i=0; i < studentData.length(); i++) {
+            JSONObject studentInfo = studentData.getJSONObject(i);
             if (studentNumber == studentInfo.getString("studentnumber")) {
-                
+                JSONArray courseData = studentInfo.getJSONArray("courseplans");
+                courseData.put(courseName);
+                studentInfo.remove("courseplans");
+                studentInfo.put("courseplans", courseData);
+                studentData.remove(i);
+                studentData.put(studentInfo);
             }
         }
-        return true;
-    }*/
-    public JSONArray getStudentCourses(String studentNumber) {
-        try {
-            String fileData = "src/students.json";
-            Path path = Paths.get("src/students.json");
-            String jsonString = Files.readString(path);
-            JSONArray students = new JSONArray(jsonString);
-            
-            for (int i=0; i < students.length(); i++) {
-                JSONObject studentInfo = students.getJSONObject(i);
-                if (studentNumber == studentInfo.getString("studentnumber")) {
-                    JSONArray studentDone = studentInfo.getJSONArray("coursesdone");
-                    JSONArray studentPlan = studentInfo.getJSONArray("courseplans");
-                    JSONArray returnable = new JSONArray();
-                    returnable.put(studentDone);
-                    returnable.put(studentPlan);
-                    return returnable;
+    }
+    
+    public void addPlannedDoneCourse(String studentNumber, String courseName) {
+        for (int i=0; i < studentData.length(); i++) {
+            JSONObject studentInfo = studentData.getJSONObject(i);
+            if (studentNumber == studentInfo.getString("studentnumber")) {
+                JSONArray courseData = studentInfo.getJSONArray("coursesdone");
+                courseData.put(courseName);
+                studentInfo.remove("coursesdone");
+                studentInfo.put("coursesdone", courseData);
+                studentData.remove(i);
+                studentData.put(studentInfo);
+                return;
+            }
+        }
+    }
+    
+    public void removePlannedCourse (String studentNumber, String courseName) {
+        for (int i=0; i < studentData.length(); i++) {
+            JSONObject studentInfo = studentData.getJSONObject(i);
+            if (studentNumber == studentInfo.getString("studentnumber")) {
+                JSONArray courseData = studentInfo.getJSONArray("courseplans");
+                for (int a=0; a < courseData.length(); a++) {
+                    if (courseName == courseData.getString(a)) {
+                        courseData.remove(a);
+                        studentInfo.remove("courseplans");
+                        studentInfo.put("courseplans", courseData);
+                        studentData.remove(i);
+                        studentData.put(studentInfo);
+                        return;
+                    }
                 }
             }
-            
-        } catch (IOException ex) {
-            Logger.getLogger(OpiskelijaAsetus.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public JSONArray getStudentCourses(String studentNumber) {
+        
+        for (int i=0; i < studentData.length(); i++) {
+            JSONObject studentInfo = studentData.getJSONObject(i);
+            if (studentNumber == studentInfo.getString("studentnumber")) {
+                JSONArray studentDone = studentInfo.getJSONArray("coursesdone");
+                JSONArray studentPlan = studentInfo.getJSONArray("courseplans");
+                JSONArray returnable = new JSONArray();
+                returnable.put(studentDone);
+                returnable.put(studentPlan);
+                return returnable;
+            }
+        }
+            
+        
         JSONArray noData = new JSONArray();
             return noData;
     }
     public JSONArray getStudents(){
-        String fileData = "src/students.json";
-        Path path = Paths.get("src/students.json");
         
-        String jsonString = "";
-        try {
-            jsonString = Files.readString(path);
-        } catch (IOException ex) {
-            Logger.getLogger(OpiskelijaAsetus.class.getName()).log(Level.SEVERE, null, ex);
-            
-        }
-        
-        JSONArray students = new JSONArray(jsonString);
         JSONArray empty = new JSONArray();
-        if (students.length() == 0) {
+        if (studentData.length() == 0) {
             
             return empty;
         }
         else {
             JSONArray numbersNames = new JSONArray();
-            for (int i=0; i < students.length(); i++) {
-            JSONObject studentInfo = students.getJSONObject(i);
+            for (int i=0; i < studentData.length(); i++) {
+            JSONObject studentInfo = studentData.getJSONObject(i);
             
             JSONObject student = new JSONObject();
             String number = studentInfo.getString("studentnumber");
