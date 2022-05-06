@@ -1,4 +1,4 @@
-# Dokumentaatio/loppudokumentti löytyy readme.txt tiedostosta
+# Dokumentaatio/loppudokumentti
 
 ## Ohjelman käyttö
 

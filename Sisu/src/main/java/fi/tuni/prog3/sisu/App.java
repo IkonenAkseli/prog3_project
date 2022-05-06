@@ -112,6 +112,9 @@ public class App extends Application{
         ComboBox comboBox = apiHandler.getInitialData(programDataMap);
         comboBox.setPromptText("Valitse tutkinto-ohjelma");
         
+        Label studentCredits = new Label();
+        ArrayList<Integer> credits = new ArrayList<>();
+        
         
         Button btnBack = new Button("Takaisin");
         
@@ -238,6 +241,17 @@ public class App extends Application{
                                                     }
                                                 }
                                                 
+                                                // Add credits as well
+                                                
+                                                credits.add(apiHandler.getAllCourses().get(courseName).getCredits());
+                                                
+                                                int totalCredits = 0;
+                        
+                                                for (int instance : credits){
+                                                    totalCredits += instance;
+                                                }
+
+                                                studentCredits.setText("Opintopisteet: " + Integer.toString(totalCredits));
                                                 
                                             }
                                             
@@ -296,9 +310,18 @@ public class App extends Application{
                         
                         for (var completedCourse : coursesDone){
                             completedCourses.getItems().add(completedCourse);
+                            if(apiHandler.getAllCourses().containsKey(completedCourse)){
+                                credits.add(apiHandler.getAllCourses().get(completedCourse).getCredits());
+                            }
                         }
                         
+                        int totalCredits = 0;
                         
+                        for (int instance : credits){
+                            totalCredits += instance;
+                        }
+                        
+                        studentCredits.setText("Opintopisteet: " + Integer.toString(totalCredits));
                         
                         plannedCourses.getItems().add("Suunnitelma");
                         
@@ -314,6 +337,7 @@ public class App extends Application{
                         gridPaneTree.add(btnCloseScene3, 2, 1);
                         gridPaneTree.add(completedCourses, 1, 0);
                         gridPaneTree.add(plannedCourses, 1, 1);
+                        gridPaneTree.add(studentCredits, 0, 1);
                         
                         
                         treeView.setRoot(rootItem);
@@ -400,6 +424,8 @@ public class App extends Application{
             
             coursesDone.clear();
             coursesPlanned.clear();
+            
+            credits.clear();
 
             completedCourses.getItems().clear();
             plannedCourses.getItems().clear();
@@ -429,9 +455,9 @@ public class App extends Application{
         
         Scene scene2 = new Scene(gridPaneS2, 1280, 720);
         
-        // Takaisin valitsemaan tutkinto-ohjelmaa
+        // Back button
         btnBack.setOnAction((ActionEvent e) -> {
-            comboBox.valueProperty().set("Valitse tuktinto-ohjelma");
+            comboBox.valueProperty().set("Valitse tutkinto-ohjelma");
             comboBox.setPromptText("Valitse tutkinto-ohjelma");
             stage.setScene(scene2);
             
@@ -495,7 +521,7 @@ public class App extends Application{
             currentStudent.add(number);
             
             // Places null value to comboBox, no idea why not the prompt
-            comboBox.valueProperty().set("Valitse tuktinto-ohjelma");
+            comboBox.valueProperty().set("Valitse tutkinto-ohjelma");
             comboBox.setPromptText("Valitse tutkinto-ohjelma");
             stage.setScene(scene2);
         });
@@ -550,6 +576,7 @@ public class App extends Application{
                 }
             }
         }
+        comboBox.setPromptText("Valitse tutkinto-ohjelma");
     }
 
     // A utility function for parsing the name from the string coming from
