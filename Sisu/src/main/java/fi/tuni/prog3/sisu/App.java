@@ -143,6 +143,8 @@ public class App extends Application{
                         GridPane gridPaneTree = new GridPane();
                         gridPaneTree.setHgap(20);
                         
+                        ListView completedCourses = new ListView();
+                        ListView plannedCourses = new ListView();
 
                         gridPaneTree.setAlignment(Pos.CENTER);
                         
@@ -174,6 +176,7 @@ public class App extends Application{
                                                 studentHelper.addPlannedCourse(currentStudent.get(0), courseName);
                                                 coursesPlanned.add(courseName);
                                                 nameLabel.setText(courseName + "\nLisätty suunnitelmaan!");
+                                                plannedCourses.getItems().add(courseName);
                                             }
                                         });
                                         
@@ -186,6 +189,21 @@ public class App extends Application{
                                                 studentHelper.addDoneCourse(currentStudent.get(0), courseName);
                                                 coursesDone.add(courseName);
                                                 nameLabel.setText(courseName + "\nLisätty suorituksiin!");
+                                                completedCourses.getItems().add(courseName);
+                                                
+                                                if(coursesPlanned.contains(courseName)){
+                                                    coursesPlanned.remove(courseName);
+                                                    
+                                                    plannedCourses.getItems().clear();
+                                                
+                                                    plannedCourses.getItems().add("Suunnitelma");
+
+                                                    for (var plannedCourse : coursesPlanned){
+                                                        plannedCourses.getItems().add(plannedCourse);
+                                                    }
+                                                }
+                                                
+                                                
                                             }
                                             
                                         });
@@ -199,6 +217,14 @@ public class App extends Application{
                                                 studentHelper.removePlannedCourse(currentStudent.get(0), courseName);
                                                 coursesPlanned.remove(courseName);
                                                 nameLabel.setText(courseName + "\nPoistettu suunnitelmasta!");
+                                                plannedCourses.getItems().clear();
+                                                
+                                                plannedCourses.getItems().add("Suunnitelma");
+                        
+                                                for (var plannedCourse : coursesPlanned){
+                                                    plannedCourses.getItems().add(plannedCourse);
+                                                }
+                                                
                                             }
                                             
                                         });
@@ -218,14 +244,30 @@ public class App extends Application{
                                 }
                                 });
                         
-                        ListView completedCourses = new ListView();
+                        
+                        
+                        completedCourses.getItems().add("Suoritukset");
+                        
+                        for (var completedCourse : coursesDone){
+                            completedCourses.getItems().add(completedCourse);
+                        }
+                        
+                        
+                        
+                        plannedCourses.getItems().add("Suunnitelma");
+                        
+                        for (var plannedCourse : coursesPlanned){
+                            plannedCourses.getItems().add(plannedCourse);
+                        }
                         
                         
                         gridPaneTree.add(treeView, 0, 0);
                         treeView.setMinWidth(600);
-                        gridPaneTree.add(btnBack, 0, 1);
-                        gridPaneTree.add(btnCloseScene3, 1, 1);
-                        //gridPaneTree.add(closeStu, 1, 2);
+                        treeView.setPrefWidth(700);
+                        gridPaneTree.add(btnBack, 2, 0);
+                        gridPaneTree.add(btnCloseScene3, 2, 1);
+                        gridPaneTree.add(completedCourses, 1, 0);
+                        gridPaneTree.add(plannedCourses, 1, 1);
                         
                         
                         treeView.setRoot(rootItem);
