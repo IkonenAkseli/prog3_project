@@ -55,7 +55,7 @@ Päävastuu: Akseli.
 Jetro toteuttanut bachDegrees, mastDegrees, doctDegrees ja miscDegrees filtteröinnin, tallettamisen ja filtteröinnin haetuista ohjelmista.
 Akseli tehnyt loput.
 
-Hoitaa tietojen hakemisen, prosessoinin ja tallentamisen.
+Hoitaa tietojen hakemisen APIsta, prosessoinin ja tallentamisen sopivassa muodossa.
 
 
 #### Course.java
