@@ -78,39 +78,18 @@ public class TestGUI extends TestFX {
         doubleClickOn(DEGREE);
         verifyThat(VERIFY, NodeMatchers.isVisible());
     }
-    /*
-    @Test
-    public void backButtonFromScene3() {
-        String LOGIN = "Sisään SISUun";
-        String CHOOSE_DEGREE = "Valitse tutkinto-ohjelma";
-        String DEGREE = "Arkkitehtuurin kandidaattiohjelma";
-        String BACK = "Takaisin";
-        String UPDATE = "Päivitä";
-        clickOn(LOGIN);
-        clickOn(CHOOSE_DEGREE);
-        clickOn(DEGREE);
-        clickOn(BACK);
-        verifyThat(UPDATE, NodeMatchers.isVisible());
-    }
     @Test
     public void filterBach() {
-        String LOGIN = "Sisään SISUun";
-        String CHOOSE_DEGREE = "Valitse tutkinto-ohjelma";
-        String FILTER_BACH = "Kandidaatin tutkinto";
-        String FILTER_MAST = "Maisterin tutkinto";
-        String FILTER_DOCT = "Tohtorin/Lisensiaatin tutkinto";
-        String FILTER_MISC = "Erikoislääkäri koulutus";
         String ANECDOTAL_BACH = "Kasvatustieteiden kandidaattiohjelma";
-        String ANECDOTAL_MAST = "Johtamisen ja tietotekniikan DI-ohjelma";
-        String ANECDOTAL_DOCT = "Historian tohtoriohjelma";
-        String ANECDOTAL_MISC = "Foniatrian erikoislääkärikoulutus (56/2015)";
-        String UPDATE = "Päivitä";
+        clickOn(STUDENT_LOGIN);
+        clickOn(STUDENT_NAME_FIELD).write(STUDENT_NAME);
+        clickOn(STUDENT_ID_FIELD).write(STUDENT_ID);
         clickOn(LOGIN);
         clickOn(FILTER_BACH);
         clickOn(UPDATE);
         clickOn(CHOOSE_DEGREE);
         verifyThat(ANECDOTAL_BACH, NodeMatchers.isVisible());
-    }*/
+    }
     @Test
     public void filterBachAndMast() {
         String ANECDOTAL_BACH = "Filosofian kandidaattiohjelma";
@@ -125,20 +104,13 @@ public class TestGUI extends TestFX {
         clickOn(CHOOSE_DEGREE);
         verifyThat(ANECDOTAL_BACH, NodeMatchers.isVisible());
         verifyThat(ANECDOTAL_MAST, NodeMatchers.isVisible());
-    }/*
+    }
     @Test
     public void filterDoct() {
-        String LOGIN = "Sisään SISUun";
-        String CHOOSE_DEGREE = "Valitse tutkinto-ohjelma";
-        String FILTER_BACH = "Kandidaatin tutkinto";
-        String FILTER_MAST = "Maisterin tutkinto";
-        String FILTER_DOCT = "Tohtorin/Lisensiaatin tutkinto";
-        String FILTER_MISC = "Erikoislääkäri koulutus";
-        String ANECDOTAL_BACH = "Kasvatustieteiden kandidaattiohjelma";
-        String ANECDOTAL_MAST = "Johtamisen ja tietotekniikan DI-ohjelma";
         String ANECDOTAL_DOCT = "Historian tohtoriohjelma";
-        String ANECDOTAL_MISC = "Foniatrian erikoislääkärikoulutus (56/2015)";
-        String UPDATE = "Päivitä";
+        clickOn(STUDENT_LOGIN);
+        clickOn(STUDENT_NAME_FIELD).write(STUDENT_NAME);
+        clickOn(STUDENT_ID_FIELD).write(STUDENT_ID);
         clickOn(LOGIN);
         clickOn(FILTER_DOCT);
         clickOn(UPDATE);
@@ -147,22 +119,15 @@ public class TestGUI extends TestFX {
     }
     @Test
     public void filterMisc() {
-        String LOGIN = "Sisään SISUun";
-        String CHOOSE_DEGREE = "Valitse tutkinto-ohjelma";
-        String FILTER_BACH = "Kandidaatin tutkinto";
-        String FILTER_MAST = "Maisterin tutkinto";
-        String FILTER_DOCT = "Tohtorin/Lisensiaatin tutkinto";
-        String FILTER_MISC = "Erikoislääkäri koulutus";
-        String ANECDOTAL_BACH = "Kasvatustieteiden kandidaattiohjelma";
-        String ANECDOTAL_MAST = "Johtamisen ja tietotekniikan DI-ohjelma";
-        String ANECDOTAL_DOCT = "Historian tohtoriohjelma";
         String ANECDOTAL_MISC = "Foniatrian erikoislääkärikoulutus (56/2015)";
-        String UPDATE = "Päivitä";
+        clickOn(STUDENT_LOGIN);
+        clickOn(STUDENT_NAME_FIELD).write(STUDENT_NAME);
+        clickOn(STUDENT_ID_FIELD).write(STUDENT_ID);
         clickOn(LOGIN);
         clickOn(FILTER_MISC);
         clickOn(UPDATE);
         clickOn(CHOOSE_DEGREE);
         verifyThat(ANECDOTAL_MISC, NodeMatchers.isVisible());
-    }*/
+    }
 
 }
