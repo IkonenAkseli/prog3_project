@@ -70,6 +70,19 @@ Päävastuu Antti.
 
 Akseli tehnyt pieniä korjauksia ja parannuksia, muuten täysin Antti.
 
+OpeskelijaAsetus.java luokan pääasiallinen tarkoitus on muokata ja välittää tietoa JSON-tiedoston, johon tallennetaan tiedot palvelun opiskelijoista 
+sekä pääasiallisen toimintoluokan App.javan välillä. OpeskelijaAsetus.java tiedostoa kutsutaan ohjelman käynnistyessä, jolloin JSON-tiedosta ladataan
+viimeisin versio opiskelijoiden tidoista ohjelmaan talteen, ohjelman ajon aikaista tiedon muokkaamista varten. Muokattua tietoa ei kirjoiteta JSON-tiedostoon,
+enne ohjelman sulkemista, jolla vältetään turhaa tiedoston kirjoittamista/lukemista ajon aikana, jos/kun käyttäjä muuttaa tai peruu valintojaan. Luokka sisältää
+6 pääasiallista metodia joita käytetään ajon aikana. 
+    addStudent-metodi lisää uuden opiskelijan ohjelmaan talteen otettuun JSON-tietoon. metodi luo opiskelija annetun opiskelija numeron, sekä nimen perusteella,
+sekä alustaa tyhjän listat suoritetuille ja suunnitetuille kursseille.
+    addPlannedCourse-metodi lisää annetulle opiskelijalle uuden kurssin suunniteltujen kurssien säiliöön.
+    addDoneCourse-metodi lisää opiskelijalle kurssin suoritettujen kurssien säiliöön, tämän voi tehdä vain opettaja-asetuksen ollessa päällä.
+    removePlannedCourse-metodi poistaa opiskelijalta halutun kurssin suunnitellut kurssit säiliöstä.
+    getStudenCourses-metodi hakee halutun opiskelijan kaikki kurssi suunnitellut/suoritettu ja palauttaa ne.
+    getStudents-metodi kerää kaikki tiedostossa olevat opiskelijat ja heidän opiskelijanumeronsa ja palauttaa ne siististi treemap muodossa.
+
 #### Yksikkötestit
 
 Kokonaan Jetro.
