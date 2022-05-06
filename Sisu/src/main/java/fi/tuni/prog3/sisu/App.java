@@ -60,10 +60,11 @@ public class App extends Application{
     public void start(Stage stage) throws IOException {
         
 
-        var button = new Button("Vierailija");
+        // Buttons for the starting scene
+        
         stage.setTitle("Melkein parempi SISU");
         
-        // lisätään nappula opiskelijan valinnalle
+        
         Button btnStudent = new Button();
         btnStudent.setText("Opiskelija");
         
@@ -71,10 +72,12 @@ public class App extends Application{
         
         OpiskelijaAsetus studentHelper = new OpiskelijaAsetus();
         
+        // Arrays for saving information from a lambda function
+        
         ArrayList<String> coursesDone = new ArrayList<>();
         ArrayList<String> coursesPlanned = new ArrayList<>();
         
-        // Taman avulla voi tallettaa opiskelijanumeron lambdafunktiosta
+        
         ArrayList<String> currentStudent = new ArrayList<>();
         
         boolean[] isTeacher = new boolean[1];
@@ -86,8 +89,10 @@ public class App extends Application{
         
         
         
-        // Talletetaan kaikki opintosuunnat tanne
+        // Map for storing all of the programmes
         HashMap<String, JSONObject> programDataMap = new HashMap<>();
+        
+        // More declarations for GUI
         Button btnClose = new Button(); 
         btnClose.setText("Sulje"); 
         btnClose.setOnAction( e -> {
@@ -95,13 +100,13 @@ public class App extends Application{
             stage.close(); 
                 });
         
-        VBox startBox = new VBox(button, btnStudent, btnTeacher, btnClose);
+        VBox startBox = new VBox( btnStudent, btnTeacher, btnClose);
         startBox.setAlignment(Pos.CENTER);
         startBox.setSpacing(10);
         
         var scene = new Scene(startBox, 1280, 720);
         
-        
+        // Object for accessing HandleApi class
         HandleApi apiHandler = new HandleApi();
         
         ComboBox comboBox = apiHandler.getInitialData(programDataMap);
@@ -113,38 +118,42 @@ public class App extends Application{
         ListView completedCourses = new ListView();
         ListView plannedCourses = new ListView();
         
-        // Valitaan
+        // Logic for handling a user click on a programme
         comboBox.setOnAction(new EventHandler() {
             @Override
             public void handle(Event e) {
+                
+                // Get the name of the programme and fetch it's information
+                // from the data map
                 String clickedName = comboBox.getValue().toString();
                 var jsonObj = programDataMap.get(clickedName);
                 
-                //System.out.println(jsonObj);
+                
                 
                 String groupId = jsonObj.getString("groupId");
                 String name = jsonObj.getString("name");
                 
-                // Asetetaan osoite, josta lahdetaan hakemaan
+                // Form the correct address for starting the recursive search
                 String address = "https://sis-tuni.funidata.fi/kori/api/modules/"
                         + "by-group-id?groupId=" + groupId
                         + "&universityId=tuni-university-root-id";
                 
                 
                 try {
+                    // Get the JSONArray of the selected programme
                     TreeItem<String> rootItem = new TreeItem<>("Tutkinto-ohjelma");
                     JSONArray jsonArr = new JSONArray(apiHandler.getApiData(address));
                     
                     rootItem.setValue(name);
                     
                     try {
-                        // Luodaan treeview, VBox ja scene, asetetaan scene
-                        // nakymaan
+                        
                         TreeView treeView = new TreeView();
-                        // Haetaan koko rakenne
+                        
+                        // Call the recursive search for rest of the data
                         apiHandler.getStructureData(jsonArr, rootItem);
-                        //moduleInfo(jsonArr, rootItem);
-                        VBox treeBox = new VBox();
+                        
+                        // Close button
                         Button btnCloseScene3 = new Button();
                         btnCloseScene3.setText("Sulje"); 
                         btnCloseScene3.setOnAction( e3 -> {
@@ -161,13 +170,15 @@ public class App extends Application{
                         
                         Scene scene3 = new Scene(gridPaneTree, 1280, 720);
                         
-                        // Printtaa kurssin nimen kun sita klikkaa
+                        // A listener for when an item in the treeview is clicked
                         treeView.getSelectionModel().selectedItemProperty()
                                 .addListener((v, oldValue, newValue) -> {
                                 if (newValue != null){
                                     String courseName = getTreeItemName(newValue.toString());
                                     HashMap<String, Course> allCourses = apiHandler.getAllCourses();
                                     
+                                    // Only move forward if the clicked item was
+                                    // a course
                                     if (allCourses.containsKey(courseName)){
                                         System.out.println(courseName);
                                         
@@ -179,6 +190,7 @@ public class App extends Application{
                                         Button btnRemovePlan = new Button("Poista suunnitelmasta");
                                         Button btnBack = new Button("Takaisin");
                                         
+                                        // Adding a course to plan
                                         btnAddPlan.setOnAction(addHandle ->{
                                             if (coursesPlanned.contains(courseName)){
                                                 nameLabel.setText(courseName + "\nKurssi on jo suunnitelmassa!");
@@ -191,6 +203,7 @@ public class App extends Application{
                                             }
                                         });
                                         
+                                        // Adding the course to completed courses
                                         btnAddCompleted.setOnAction(addHandle ->{
                                             
                                             if (coursesDone.contains(courseName)){
@@ -202,14 +215,18 @@ public class App extends Application{
                                                 nameLabel.setText(courseName + "\nLisätty suorituksiin!");
                                                 completedCourses.getItems().add(courseName);
                                                 
+                                                // Remove the course from planned courses
+                                                // since it was completed
                                                 if(coursesPlanned.contains(courseName)){
                                                     coursesPlanned.remove(courseName);
                                                     studentHelper.removePlannedCourse(currentStudent.get(0), courseName);
                                                     
+                                                    // Refresh planned courses list
                                                     plannedCourses.getItems().clear();
                                                 
                                                     plannedCourses.getItems().add("Suunnitelma");
 
+                                                    
                                                     for (var plannedCourse : coursesPlanned){
                                                         plannedCourses.getItems().add(plannedCourse);
                                                     }
@@ -220,6 +237,7 @@ public class App extends Application{
                                             
                                         });
                                         
+                                        // Remove course from plan
                                         btnRemovePlan.setOnAction(addHandle ->{
                                             
                                             if (!coursesPlanned.contains(courseName)){
@@ -229,6 +247,8 @@ public class App extends Application{
                                                 studentHelper.removePlannedCourse(currentStudent.get(0), courseName);
                                                 coursesPlanned.remove(courseName);
                                                 nameLabel.setText(courseName + "\nPoistettu suunnitelmasta!");
+                                                
+                                                // Refresh planned courses list
                                                 plannedCourses.getItems().clear();
                                                 
                                                 plannedCourses.getItems().add("Suunnitelma");
@@ -245,7 +265,8 @@ public class App extends Application{
                                             stage.setScene(scene3);
                                         });
                                         
-                                        
+                                        // Display options after clicking on a course
+                                        // Only a teacher can add to the completed list
                                         VBox courseBox = new VBox(nameLabel);
                                         
                                         if(isTeacher[0]){
@@ -264,7 +285,7 @@ public class App extends Application{
                                 });
                         
                         
-                        
+                        // Create lists of planned and complete courses
                         completedCourses.getItems().add("Suoritukset");
                         
                         for (var completedCourse : coursesDone){
@@ -290,8 +311,7 @@ public class App extends Application{
                         
                         
                         treeView.setRoot(rootItem);
-                        /*treeBox.getChildren().add(treeView);
-                        treeBox.getChildren().addAll(btnBack, btnCloseScene3);*/
+                        
                         
                         
                         
@@ -307,6 +327,7 @@ public class App extends Application{
             }
         });
         
+        // Declaration for log-in GUI
         TextField stuNumber = new TextField();
         TextField stuName = new TextField();
         Button addStu = new Button();
@@ -343,11 +364,11 @@ public class App extends Application{
             stage.close(); 
                 });
         
-        // Rajaus hakulaatikko
+        // Search box for programmes
         Text filterDegreesTFName = new Text("Rajaa tutkinto-ohjelmia");
         TextField filterDegreesTF = new TextField("");
 		
-        // Rajaus checkboxit
+        // Checkboxes for selecting only given types of programmes
         
         CheckBox bachDegreeCB = new CheckBox("Kandidaatin tutkinto");
         CheckBox mastDegreeCB = new CheckBox("Maisterin tutkinto");
@@ -364,17 +385,25 @@ public class App extends Application{
                                                   apiHandler,
                                                   programDataMap));
         
-        
+        // Button for getting out of programme interface,
+        // Acts as logging out so clearing current user data from utility
+        // arrays. Changes made will still be saved upon closing the program.
         Button btnToStart = new Button("Takaisin");
         btnToStart.setOnAction(backBtn -> {
+            
             coursesDone.clear();
             coursesPlanned.clear();
 
             completedCourses.getItems().clear();
             plannedCourses.getItems().clear();
+            
+            currentStudent.clear();
+            isTeacher[0] = false;
+            
             stage.setScene(scene); 
         });
         
+        // GUI declaration for programme view
         GridPane gridPaneS2 = new GridPane();
         gridPaneS2.setHgap(20);
         gridPaneS2.add(comboBox, 0, 0);
@@ -400,7 +429,7 @@ public class App extends Application{
         });
         
         btnStudent.setOnAction(eh -> stage.setScene(sceneStu));
-        button.setOnAction(e -> stage.setScene(scene2));
+        
         
         btnTeacher.setOnAction(btnTeacherEvent ->{
            isTeacher[0] = true;
@@ -411,20 +440,16 @@ public class App extends Application{
         stage.setScene(scene);
         stage.show();
         
-        
+        // Fetches student data and makes it ready to be displayed in the
+        // treeview. Creates new student if studentnumber doesn't exist.
         addStu.setOnAction((ActionEvent ehs) -> {
             String number = stuNumber.getText();
             String name = stuName.getText();
-            
-            
-            
-            
-            
-            
+
             TreeMap<String,String> studentNumbers = studentHelper.getStudents();
             
             
-            
+            // Logic to determine what to do.
             if(name == null || name.length() == 0 || name.equals("Nimi")
                     || number == null ||number.length() == 0){
                 return;
@@ -457,7 +482,7 @@ public class App extends Application{
                 }
                 
             }
-            currentStudent.clear();
+            
             currentStudent.add(number);
             
             
@@ -469,6 +494,8 @@ public class App extends Application{
         launch();
     }
     
+    // For updating the box containing all the programmes
+    // Updates the given combobox based on rules defined by given parameters.
     private void updateComboBox(ComboBox comboBox,
                                 String searchterm,
                                 boolean bachDegree, boolean mastDegree,
@@ -514,6 +541,8 @@ public class App extends Application{
         }
     }
 
+    // A utility function for parsing the name from the string coming from
+    // clicking the treeview
     private String getTreeItemName(String item){
         
         String[] lines = item.split("[\r\n]+");
@@ -521,8 +550,10 @@ public class App extends Application{
         String wanted = lines[0];
         
         StringBuilder sb = new StringBuilder(wanted);
+        if (sb.length() > 18){
+            sb.delete(0,18);
+        }
         
-        sb.delete(0,18);
         
         return sb.toString();
     }

@@ -192,7 +192,7 @@ public class HandleApi {
 
                 if(type.equals("ModuleRule")) {
                    
-                    //Seuraava osoite
+                    //Build next Address
                     String nextModuleId = obj.get("moduleGroupId").toString();
                     String address = "https://sis-tuni.funidata.fi/kori/api/modules/"
                                 + "by-group-id?groupId=" + nextModuleId
@@ -205,25 +205,25 @@ public class HandleApi {
                     TreeItem newTreeItem = new TreeItem(getItemInfo(moduleData, type));                    
                     treeItem.getChildren().add(newTreeItem);
                    
-                    //Haetaan seuraava kutsumalla rekursiivisesti
+                    //Recursively get next modules
                     JSONArray ruleModules = new JSONArray(getApiData(address));
                     getStructureData(ruleModules, newTreeItem);
                    
                 } else if(type.equals("CompositeRule")) {
-                    //Seuraava, tasta ei lisata mitaan
+                    //Go deeper, nothing added here
                     JSONArray ruleModules = obj.getJSONArray("rules");
                    
                     getStructureData(ruleModules, treeItem);
 
                 } else if(this.modules.contains(type)) {
-                    //Seuraava, tasta ei lisata mitaan
+                    //Go deeper, nothing added here
                     JSONObject nextModule = obj.getJSONObject("rule");
                    
                     JSONArray ruleModules = new JSONArray();
                     getStructureData(ruleModules.put(nextModule), treeItem);
                 }
             } else {
-                //Kurssi, tasta ei paase alemmaksi
+                //Course, this is a leaf of the tree
                 String nextModuleId = obj.get("courseUnitGroupId").toString();
                 String s = "https://sis-tuni.funidata.fi/kori/api/course-units/"
                             + "by-group-id?groupId=" + nextModuleId
@@ -236,7 +236,7 @@ public class HandleApi {
                 treeItem.getChildren().add(item);
             }
         }
-        //return treeItem;
+        
     }
 
 
@@ -263,7 +263,7 @@ public class HandleApi {
         String name = "";
         String description = "";
 
-        // Haetaan moduulin tiedot riippuen moduulin tyypista
+        // Fetch module info depending on the module type using charset UTF_8
         if(type.equals("ModuleRule")) {
             try {
                 byte[] sBytes = new JSONObject(object.get("name").toString())
@@ -304,6 +304,9 @@ public class HandleApi {
                 int credits = Integer.parseInt(
                               new JSONObject(object.get("credits").toString())
                                                    .get("min").toString());
+                
+                // Create course object, add to all courses and finalize
+                // the returning string
                 
                 Course course = new Course(name, description, credits);
                 allCourses.put(name, course);
