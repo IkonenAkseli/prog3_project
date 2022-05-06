@@ -56,16 +56,8 @@ public class OpiskelijaAsetus {
         student.put("courseplans", coursePlans);
         
         studentData.put(student);
-        try {
-            FileWriter file = new FileWriter("src/students.json", false);
-            file.write(studentData.toString());
-            file.close();
-            return true;
-        }
+        return true;
         
-        catch (IOException e) {
-         return false;
-      }
     }
     public void addPlannedCourse(String studentNumber, String courseName) {
         for (int i=0; i < studentData.length(); i++) {
@@ -81,7 +73,7 @@ public class OpiskelijaAsetus {
         }
     }
     
-    public void addPlannedDoneCourse(String studentNumber, String courseName) {
+    public void addDoneCourse(String studentNumber, String courseName) {
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
             if (studentNumber == studentInfo.getString("studentnumber")) {
@@ -156,6 +148,16 @@ public class OpiskelijaAsetus {
             
             }
             return numbersNames;
+        }
+    }
+    public void saveData() {
+        try {
+            FileWriter file = new FileWriter("src/students.json", false);
+            file.write(studentData.toString());
+            file.close();
+        }
+        
+        catch (IOException e) {
         }
     }
 }
