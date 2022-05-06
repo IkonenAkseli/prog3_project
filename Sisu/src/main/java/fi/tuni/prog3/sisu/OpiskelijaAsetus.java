@@ -63,7 +63,7 @@ public class OpiskelijaAsetus {
     public void addPlannedCourse(String studentNumber, String courseName) {
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
-            if (studentNumber == studentInfo.getString("studentnumber")) {
+            if (studentNumber.equals(studentInfo.getString("studentnumber"))) {
                 JSONArray courseData = studentInfo.getJSONArray("courseplans");
                 courseData.put(courseName);
                 studentInfo.remove("courseplans");
@@ -77,7 +77,7 @@ public class OpiskelijaAsetus {
     public void addDoneCourse(String studentNumber, String courseName) {
         for (int i=0; i < studentData.length(); i++) {
             JSONObject studentInfo = studentData.getJSONObject(i);
-            if (studentNumber == studentInfo.getString("studentnumber")) {
+            if (studentNumber.equals(studentInfo.getString("studentnumber"))) {
                 JSONArray courseData = studentInfo.getJSONArray("coursesdone");
                 courseData.put(courseName);
                 studentInfo.remove("coursesdone");
